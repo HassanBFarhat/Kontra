@@ -8,7 +8,11 @@ class Background {
     };
 
     update() {
-
+        if (this.game.right) { // TODO: Scene Manager to manage backgroudn scrolling
+            this.x++;
+        } else if (this.game.left) {
+            this.x--;
+        }
     };
 
     draw(ctx) {
