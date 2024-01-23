@@ -26,7 +26,7 @@ class Lance {
         this.isOnGround = false;
 
         this.velocity = {x: 0, y: 0};
-        this.WALK_SPEED = 175;
+        this.WALK_SPEED = 300;
         this.FALL_SPEED = 200;
         this.JUMP_TICK = 0;
 
@@ -83,16 +83,6 @@ class Lance {
     };
 
     update() {
-
-        let newX = 0;
-
-        if (this.game.right) {
-            newX++;
-            this.x++;
-        } else if (this.game.left) {
-            newX--;
-            this.x--;
-        }
         const TICK = this.game.clockTick;
 
         if (this.game.A && this.isOnGround) { // Jump
@@ -115,13 +105,15 @@ class Lance {
         }
 
 
-        //velocity physics
+        // velocity physics
         // Walking
-        // if (this.game.right) {
-        //     this.x += this.WALK_SPEED * TICK
-        // } else if (this.game.left) {
-        //     this.x -= this.WALK_SPEED * TICK
-        // }
+        if (this.game.right) {
+            this.x += this.WALK_SPEED * TICK
+            this.facing = 0; //right
+        } else if (this.game.left) {
+            this.x -= this.WALK_SPEED * TICK
+            this.facing = 1; //left
+        }
 
         // if (this.state != 2 && !this.isOnGround && this.y < PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
         //     this.y += this.FALL_SPEED * TICK;
@@ -141,8 +133,6 @@ class Lance {
 
         // TODO:
         //collisions
-
-
         
 
         // update state
@@ -161,8 +151,7 @@ class Lance {
         // console.log("STATE: " + this.state);
 
         // update direction
-        if (newX < 0) this.facing = 1; //left
-        if (newX > 0) this.facing = 0; //right
+
 
 
         // console.log("\nFACING: " + this.facing);
