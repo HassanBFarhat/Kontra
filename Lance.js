@@ -50,10 +50,8 @@ class Lance {
     update() {
         if (this.game.right) {
             this.x++;
-            console.log(this.x)
         } else if (this.game.left) {
             this.x--;
-            console.log(this.x)
         }
 
         // TODO:
