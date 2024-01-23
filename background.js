@@ -16,6 +16,6 @@ class Background {
         var destW = srcW * PARAMS.SCALE;
         var destH = srcH * PARAMS.SCALE;
         ctx.imageSmoothingEnabled = false; // Smooth scale
-        ctx.drawImage(this.backgroundImage, this.x, this.y, srcW, srcH, 0, 0, destW, destH);
+        ctx.drawImage(this.backgroundImage, this.x + this.game.camera.x, this.y, srcW, srcH, 0, 0, destW, destH);
     };
 };

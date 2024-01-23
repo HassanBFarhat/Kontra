@@ -18,7 +18,6 @@ ASSET_MANAGER.downloadAll(function () {
 	gameEngine.addEntity(new Lance(gameEngine, 0, 376));
 	gameEngine.init(ctx);
 		
-	// TODO: SceneManager and valid gameEngine
-	// new SceneManager(gameEngine);
+	gameEngine.addEntity(new SceneManager(gameEngine));
 	gameEngine.start();
 });

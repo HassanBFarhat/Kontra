@@ -3,7 +3,7 @@ class Lance {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
 
-        // this.game.lance = this;
+        this.game.lance = this;
         // TODO: Proper sprite alignment and framecount for animation
         this.animator = new Animator(ASSET_MANAGER.getAsset("./sprites/Lance.png"), 108, 154, 24, 34, 1, 0.5, 1, false, true);
 
@@ -48,12 +48,15 @@ class Lance {
     };
 
     update() {
-        if (this.game.right) { // TODO: Scene Manager to manage background scrolling
+        if (this.game.right) {
             this.x++;
+            console.log(this.x)
         } else if (this.game.left) {
             this.x--;
+            console.log(this.x)
         }
 
+        // TODO:
         //velocity physics
 
         //collisions
@@ -61,7 +64,7 @@ class Lance {
     };
 
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y, PARAMS.SCALE)
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE)
     };
 
 }
