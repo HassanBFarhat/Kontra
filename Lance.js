@@ -12,13 +12,14 @@ class Lance {
 
         //Lance's state variables
         this.facing = 0; // 0 = right, 1 = left
-        this.state = 0; // 0 = idle, 1 = walking, = 2 = jumping
+        this.state = 0; // 0 = idle, 1 = walking, = 2 = jumping 3 = falling
         this.dead = false;
-        this.isOnGround;
+        this.isOnGround = false;
 
         this.velocity = {x: 0, y: 0};
-        this.WALK_SPEED = 150;
-        this.FALL_SPEED = 100;
+        this.WALK_SPEED = 175;
+        this.FALL_SPEED = 200;
+        this.JUMP_TICK = 0;
 
         this.updateBoundingBox();
 
@@ -52,7 +53,27 @@ class Lance {
 
     update() {
         const TICK = this.game.clockTick;
- 
+
+        if (this.game.A && this.isOnGround) { // Jump
+            this.state = 2;
+            this.isOnGround = false;
+            console.log("Jumping");
+            this.JUMP_TICK = 1;
+        }
+
+        if (this.state === 2) {
+            if (this.JUMP_TICK > 0) {
+                console.log("Jumping");
+                this.JUMP_TICK -= TICK;
+                this.y -= this.FALL_SPEED * TICK
+            } else {
+                console.log("Falling")
+                this.JUMP_TICK = 0;
+                this.state = 3; // Falling
+            }
+        }
+
+
         //velocity physics
         // Walking
         if (this.game.right) {
@@ -61,8 +82,12 @@ class Lance {
             this.x -= this.WALK_SPEED * TICK
         }
 
-        if (!this.isOnGround && this.y < PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
+        if (this.state != 2 && !this.isOnGround && this.y < PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
             this.y += this.FALL_SPEED * TICK;
+        }
+
+        if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
+            this.isOnGround = true;
         }
 
         // TODO:
