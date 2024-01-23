@@ -14,8 +14,11 @@ class Lance {
         this.facing = 0; // 0 = right, 1 = left
         this.state = 0; // 0 = idle, 1 = walking, = 2 = jumping
         this.dead = false;
+        this.isOnGround;
 
         this.velocity = {x: 0, y: 0};
+        this.WALK_SPEED = 150;
+        this.FALL_SPEED = 100;
 
         this.updateBoundingBox();
 
@@ -48,15 +51,21 @@ class Lance {
     };
 
     update() {
+        const TICK = this.game.clockTick;
+ 
+        //velocity physics
+        // Walking
         if (this.game.right) {
-            this.x++;
+            this.x += this.WALK_SPEED * TICK
         } else if (this.game.left) {
-            this.x--;
+            this.x -= this.WALK_SPEED * TICK
+        }
+
+        if (!this.isOnGround && this.y < PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
+            this.y += this.FALL_SPEED * TICK;
         }
 
         // TODO:
-        //velocity physics
-
         //collisions
 
     };
