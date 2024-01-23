@@ -4,10 +4,10 @@ class ground {
 
         this.spritesheet = ASSET_MANAGER.getAsset("/sprites/rectangle.png");
 
-        this.BB = new BoundingBox(this.x, this.y, this.w, PARAMS.BLOCKWIDTH * 2);
+        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
     };
 
-    update(ctx) {
+    update() {
     };
 
     draw(ctx) {
