@@ -160,6 +160,7 @@ class GameEngine {
     };
 
     gamepadUpdate() {
+        return; // TODO: Enable gamepads (Currently adds complications to dev)
         this.gamepad = navigator.getGamepads()[0];
         let gamepad = this.gamepad;
         if (gamepad != null && !this.keyboardActive) {
