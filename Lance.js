@@ -92,6 +92,7 @@ class Lance {
         } else if (this.game.left) {
             newX--;
             this.x--;
+        }
         const TICK = this.game.clockTick;
 
         if (this.game.A && this.isOnGround) { // Jump
@@ -116,19 +117,19 @@ class Lance {
 
         //velocity physics
         // Walking
-        if (this.game.right) {
-            this.x += this.WALK_SPEED * TICK
-        } else if (this.game.left) {
-            this.x -= this.WALK_SPEED * TICK
-        }
+        // if (this.game.right) {
+        //     this.x += this.WALK_SPEED * TICK
+        // } else if (this.game.left) {
+        //     this.x -= this.WALK_SPEED * TICK
+        // }
 
-        if (this.state != 2 && !this.isOnGround && this.y < PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
-            this.y += this.FALL_SPEED * TICK;
-        }
+        // if (this.state != 2 && !this.isOnGround && this.y < PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
+        //     this.y += this.FALL_SPEED * TICK;
+        // }
 
-        if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
-            this.isOnGround = true;
-        }
+        // if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
+        //     this.isOnGround = true;
+        // }
 
 
         // // update position
