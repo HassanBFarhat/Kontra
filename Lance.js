@@ -65,13 +65,13 @@ class Lance {
         this.animations[2][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
         //jumping facing left = 1
         this.animations[2][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
-
-
+        this.lastBB = this.BB;
     };
 
     updateBoundingBox() {
-
-
+        if (this.size === 0 || this.size === 3) {
+            this.BB = new Boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
+        }
     };
 
     updateLastBoundingBox() {

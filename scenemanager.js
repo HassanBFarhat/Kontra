@@ -37,7 +37,7 @@ class SceneManager {
             let yV = "yV=" + Math.floor(this.game.lance.velocity.y);
             ctx.fillText(xV, 1.5 * PARAMS.BLOCKWIDTH, 2.5 * PARAMS.BLOCKWIDTH);
             ctx.fillText(yV, 1.5 * PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH);
-
+            ctx.f
             ctx.translate(0, -10); // hack to move elements up by 10 pixels instead of adding -10 to all y coordinates below
             ctx.strokeStyle = "White";
             ctx.lineWidth = 2;
