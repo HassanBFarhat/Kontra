@@ -12,6 +12,10 @@ class GameEngine {
         this.right = false;
         this.up = false;
         this.down = false;
+        this.diagonalUpLeft = false;
+        this.diagonalDownLeft = false;
+        this.diagonalUpRight = false;
+        this.diagonalDownRight = false;
         this.A = false;
         this.B = false;
 
@@ -74,6 +78,22 @@ class GameEngine {
                 case "KeyS":
                     that.down = true;
                     break;
+                case "ArrowLeft" && "ArrowUp":
+                case "KeyA" && "KeyW":
+                    that.diagonalUpLeft = true;
+                    break;
+                case "ArrowLeft" && "ArrowDown":
+                case "KeyA" && "KeyS":
+                    that.diagonalDownLeft = true;
+                    break;
+                case "ArrowRight" && "ArrowUp":
+                case "KeyD" && "KeyW":
+                    that.diagonalUpRight = true;
+                    break;
+                case "ArrowRight" && "ArrowDown":
+                case "KeyD" && "KeyS":
+                    that.diagonalDownRight = true;
+                    break;
                 case "KeyZ":
                 case "Comma":
                     that.B = true;
@@ -102,6 +122,22 @@ class GameEngine {
                 case "ArrowDown":
                 case "KeyS":
                     that.down = false;
+                    break;
+                case "ArrowLeft" && "ArrowUp":
+                case "KeyA" && "KeyW":
+                    that.diagonalUpLeft = false;
+                    break;
+                case "ArrowLeft" && "ArrowDown":
+                case "KeyA" && "KeyS":
+                    that.diagonalDownLeft = false;
+                    break;
+                case "ArrowRight" && "ArrowUp":
+                case "KeyD" && "KeyW":
+                    that.diagonalUpRight = false;
+                    break;
+                case "ArrowRight" && "ArrowDown":
+                case "KeyD" && "KeyS":
+                    that.diagonalDownRight = false;
                     break;
                 case "KeyZ":
                 case "Comma":
@@ -156,7 +192,7 @@ class GameEngine {
         for (var i = 0; i < this.entities.length; i++) {
             this.entities[i].draw(this.ctx);
         }
-       // this.camera.draw(this.ctx); // TODO: Scene Manager handles camera?
+       this.camera.draw(this.ctx); // TODO: Scene Manager handles camera?
     };
 
     gamepadUpdate() {
@@ -186,7 +222,7 @@ class GameEngine {
             }
         }
 
-        // this.camera.update(); // TODO: Scene Manager handles camera?
+        this.camera.update(); // TODO: Scene Manager handles camera?
         
         for (var i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {

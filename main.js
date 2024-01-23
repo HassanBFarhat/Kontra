@@ -2,9 +2,8 @@ var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("backgrounds/random kontra level.png");
 ASSET_MANAGER.queueDownload("./sprites/Lance.png")
-// ASSET_MANAGER.queueDownload("./LanceMovingR+IdleR.png");
 
-ASSET_MANAGER.downloadAll(function () {
+ASSET_MANAGER.downloadAll(() => {
 	var gameEngine = new GameEngine();
 
 	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
@@ -19,5 +18,7 @@ ASSET_MANAGER.downloadAll(function () {
 	gameEngine.init(ctx);
 		
 	gameEngine.addEntity(new SceneManager(gameEngine));
+	
+	// new SceneManager(gameEngine)
 	gameEngine.start();
 });
