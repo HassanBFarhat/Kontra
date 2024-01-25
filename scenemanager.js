@@ -24,22 +24,17 @@ class SceneManager {
         // TODO: offset by lance width?
         const midpoint = PARAMS.CANVAS_WIDTH / 2;
 
-        console.log("\nCAMERA X POS: " + this.x);
-        console.log("LANCES X POS: " + this.game.entities[1].x);
-        console.log("CANVAS MIDPOINT: " + midpoint);
-
         if (this.x < this.game.entities[1].x - midpoint) this.x = this.game.entities[1].x - midpoint;
     };
  
     draw(ctx) {
         if (PARAMS.DEBUG) {
-            let xV = "xV=" + Math.floor(this.game.lance.velocity.x);
-            let yV = "yV=" + Math.floor(this.game.lance.velocity.y);
-            ctx.fillText(xV, 1.5 * PARAMS.BLOCKWIDTH, 2.5 * PARAMS.BLOCKWIDTH);
-            ctx.fillText(yV, 1.5 * PARAMS.BLOCKWIDTH, 3 * PARAMS.BLOCKWIDTH);
             ctx.translate(0, -10); // hack to move elements up by 10 pixels instead of adding -10 to all y coordinates below
             ctx.strokeStyle = "White";
             ctx.lineWidth = 2;
+
+
+            ctx.fillText(`FPS: ${this.game.timer.ticks.length}`, 5, 25)
             ctx.strokeStyle = this.game.left ? "White" : "Grey";
             ctx.fillStyle = ctx.strokeStyle;
             ctx.strokeRect(6 * PARAMS.BLOCKWIDTH - 2, 2.5 * PARAMS.BLOCKWIDTH - 2, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
