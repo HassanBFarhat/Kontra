@@ -15,8 +15,8 @@ class Ground {
             ctx.strokeStyle = 'Green';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
             ctx.color = 'Green';
-            ctx.fillText("("+this.x +","+this.y+")", this.x - this.game.camera.x, this.y);
-            ctx.fillText("BB top: " + this.BB.top, this.x - this.game.camera.x, this.y - 10);
+            ctx.fillText("("+this.x +","+this.y+")", this.x - this.game.camera.x, this.y + 10);
+            ctx.fillText("BB top: " + this.BB.top, this.x - this.game.camera.x, this.y + 20);
         }
     };
 };

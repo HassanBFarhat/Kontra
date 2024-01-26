@@ -23,6 +23,10 @@ class Lance {
         this.width = 30 * PARAMS.SCALE;
         this.height = 34 * PARAMS.SCALE;
 
+        // The ends of the last touched ground
+        let ledgeR = 0; 
+        let ledgeL = 0;
+
         this.updateBoundingBox();
 
         //Lance's Animations
@@ -107,9 +111,7 @@ class Lance {
         }
 
         this.updateBoundingBox();
-        let ledge = 0; 
         // Check Collisions
-        
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
                 // if (entity instanceof Ground) {
@@ -119,22 +121,22 @@ class Lance {
                 if (this.state != 2 && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
                     this.isOnGround = true;
                     this.y = entity.BB.y - this.BB.height;
-                    console.log(entity.BB.top)
                     this.velocity.y = 0;
-                    console.log("On Ground");
                     this.updateBoundingBox();
-                    ledge = this.BB.right;
+                    console.log("Set ledgeR to " + entity.BB.right)
+                    this.ledgeR = entity.BB.right;
+                    this.ledgeL = entity.BB.left;
                 }
         }
         });
 
         this.updateLastBoundingBox();
 
-        if (this.isOnGround && this.x > ledge) { // walked off ledge
+        if (this.isOnGround && (this.x > this.ledgeR || this.x < this.ledgeL)) { // walked off ledge
             this.isOnGround = false;
         }
         
-        if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
+        if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) { // hit bottom of screen
             this.isOnGround = true;
         }
 
@@ -144,19 +146,11 @@ class Lance {
         }
       
 
-
-
-
         // // update position
         // this.x += this.velocity.x * TICK * PARAMS.SCALE;
         // this.y += this.velocity.y * TICK * PARAMS.SCALE;
         // this.updateLastBB();
-        // this.updateBB();
-
-
-        // TODO:
-        //collisions
-        
+        // this.updateBB();     
 
         // update state
         if (this.state !== 2) {
@@ -167,8 +161,6 @@ class Lance {
             if (this.game.left) this.state = 1;
             else if (this.game.right) this.state = 1;
             else this.state = 0;
-        } else {
-
         }
 
         // console.log("STATE: " + this.state);
