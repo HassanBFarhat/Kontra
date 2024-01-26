@@ -12,6 +12,7 @@ class Lance {
         this.state = 0; // 0 = idle, 1 = walking, = 2 = jumping 3 = falling
         this.dead = false;
         this.isOnGround = false;
+        this.isFalling = true;
 
         this.velocity = {x: 0, y: 0};
         this.WALK_SPEED = 300;
@@ -25,6 +26,7 @@ class Lance {
         let ledgeL = 0;
 
         this.updateBoundingBox();
+        this.lastBB = this.BB;
 
         //Lance's Animations
         this.animations = [];
@@ -59,7 +61,6 @@ class Lance {
         this.animations[2][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
         //jumping facing left = 1
         this.animations[2][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
-        this.lastBB = this.BB;
     };
 
     updateBoundingBox() {
@@ -67,7 +68,7 @@ class Lance {
     };
 
     updateLastBoundingBox() {
-        this.lastBoundingBox = this.boundingBox;
+        this.lastBB = this.BB;
     };
 
     die() {
@@ -80,6 +81,7 @@ class Lance {
         if (this.game.A && this.isOnGround) { // Jump
             this.state = 2;
             this.isOnGround = false;
+            this.isFalling = false;
             this.JUMP_TICK = 1;
         }
 
@@ -92,9 +94,9 @@ class Lance {
                 console.log("Falling")
                 this.JUMP_TICK = 0;
                 this.state = 3; // Falling
+                this.isFalling = true;
             }
         }
-
 
         // Walking
         if (this.game.right) {
@@ -110,8 +112,9 @@ class Lance {
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
-                if (this.state != 2 && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
+                if (this.isFalling && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
                     this.isOnGround = true;
+                    this.isFalling = false;
                     this.y = entity.BB.y - this.BB.height;
                     this.velocity.y = 0;
                     this.updateBoundingBox();
@@ -125,10 +128,12 @@ class Lance {
 
         if (this.isOnGround && (this.x > this.ledgeR || this.x < this.ledgeL)) { // walked off ledge
             this.isOnGround = false;
+            this.isFalling = true;
         }
         
         if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) { // hit bottom of screen
             this.isOnGround = true;
+            this.isFalling = false;
         }
 
         // Fall unless on ground or jumping
@@ -173,6 +178,7 @@ class Lance {
             ctx.fillText("state: " + this.state, this.x - this.game.camera.x, this.y - 30);
             ctx.fillText("facing: " + this.facing, this.x - this.game.camera.x, this.y - 40);
             ctx.fillText("isOnGround: " + this.isOnGround, this.x - this.game.camera.x, this.y - 50);
+            ctx.fillText("isFalling: " + this.isFalling, this.x - this.game.camera.x, this.y - 60);
         }
     };
 

@@ -17,6 +17,7 @@ ASSET_MANAGER.downloadAll(function () {
 	gameEngine.addEntity(new Background(gameEngine, 0, 32));
 	gameEngine.addEntity(new Lance(gameEngine, 0, 0));
 	gameEngine.addEntity(new Ground(gameEngine, 0, 515, 264, 50));
+	gameEngine.addEntity(new Ground(gameEngine, 300, 615, 264, 50));
 	gameEngine.addEntity(new SceneManager(gameEngine));
 	gameEngine.init(ctx);
 	
