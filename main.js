@@ -1,17 +1,16 @@
-var ASSET_MANAGER = new AssetManager();
+const ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("backgrounds/random kontra level.png");
 ASSET_MANAGER.queueDownload("./sprites/Lance.png")
 ASSET_MANAGER.queueDownload("./sprites/rectangle.png")
-// ASSET_MANAGER.queueDownload("./LanceMovingR+IdleR.png");
 
 ASSET_MANAGER.downloadAll(function () {
-	var gameEngine = new GameEngine();
+	const gameEngine = new GameEngine();
 
 	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
 
-	var canvas = document.getElementById('gameWorld');
-	var ctx = canvas.getContext('2d');
+	const canvas = document.getElementById('gameWorld');
+	const ctx = canvas.getContext('2d');
 
 	PARAMS.CANVAS_WIDTH = canvas.width;
 	PARAMS.CANVAS_HEIGHT = canvas.height;
@@ -20,7 +19,6 @@ ASSET_MANAGER.downloadAll(function () {
 	gameEngine.addEntity(new Ground(gameEngine, 0, 515, 264, 50));
 	gameEngine.addEntity(new SceneManager(gameEngine));
 	gameEngine.init(ctx);
-		
 	
 	gameEngine.start();
 });

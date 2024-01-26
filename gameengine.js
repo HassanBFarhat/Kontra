@@ -7,7 +7,6 @@ class GameEngine {
         this.surfaceWidth = null;
         this.surfaceHeight = null;
 
-        // TODO: Implement diagonals 
         this.left = false;
         this.right = false;
         this.up = false;
@@ -192,7 +191,7 @@ class GameEngine {
         for (var i = 0; i < this.entities.length; i++) {
             this.entities[i].draw(this.ctx);
         }
-       this.camera.draw(this.ctx); // TODO: Scene Manager handles camera?
+       this.camera.draw(this.ctx);
     };
 
     gamepadUpdate() {
@@ -222,7 +221,7 @@ class GameEngine {
             }
         }
 
-        this.camera.update(); // TODO: Scene Manager handles camera?
+        this.camera.update();
         
         for (var i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {

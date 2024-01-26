@@ -4,9 +4,6 @@ class Lance {
 
         this.game.lance = this;
 
-        // TODO: Proper sprite alignment and framecount for animation
-        // this.animator = new Animator(ASSET_MANAGER.getAsset("./sprites/Lance.png"), 108, 154, 28, 34, 1, 0.5, 1, false, true);
-
         //spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Lance.png");
 
@@ -23,7 +20,7 @@ class Lance {
         this.width = 30 * PARAMS.SCALE;
         this.height = 34 * PARAMS.SCALE;
 
-        // The ends of the last touched ground
+        // The edges of the last touched ground entity
         let ledgeR = 0; 
         let ledgeL = 0;
 
@@ -83,7 +80,6 @@ class Lance {
         if (this.game.A && this.isOnGround) { // Jump
             this.state = 2;
             this.isOnGround = false;
-            console.log("Jumping");
             this.JUMP_TICK = 1;
         }
 
@@ -100,7 +96,6 @@ class Lance {
         }
 
 
-        // velocity physics
         // Walking
         if (this.game.right) {
             this.x += this.WALK_SPEED * TICK
@@ -110,20 +105,16 @@ class Lance {
             this.facing = 1; //left
         }
 
-        this.updateBoundingBox();
+        
         // Check Collisions
+        this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
-                // if (entity instanceof Ground) {
-                //     console.log("Ground TOP: " + entity.BB.top)
-                //     console.log("Bottom" + this.lastBB.bottom)
-                // }
                 if (this.state != 2 && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
                     this.isOnGround = true;
                     this.y = entity.BB.y - this.BB.height;
                     this.velocity.y = 0;
                     this.updateBoundingBox();
-                    console.log("Set ledgeR to " + entity.BB.right)
                     this.ledgeR = entity.BB.right;
                     this.ledgeL = entity.BB.left;
                 }
@@ -154,28 +145,14 @@ class Lance {
 
         // update state
         if (this.state !== 2) {
-            // if (!this.game.left) this.state = 1;
-            // else if (!this.game.right) this.state = 1;
-            // else this.state = 0;
-
             if (this.game.left) this.state = 1;
             else if (this.game.right) this.state = 1;
             else this.state = 0;
         }
-
-        // console.log("STATE: " + this.state);
-
-        // update direction
-
-
-
-        // console.log("\nFACING: " + this.facing);
     };
 
 
     draw(ctx) {
-        // this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
-        
         if (this.state == 0) { // if idle
             if (this.facing == 1) { // if facing left
                 ctx.drawImage(this.spritesheet, 108, 39, 30, 34, this.x - this.game.camera.x, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
@@ -185,15 +162,18 @@ class Lance {
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-        // draw text of coordinates
-        ctx.font = "10px Arial";
-        ctx.fillStyle = "white";
-        ctx.fillText("x: " + this.x, this.x - this.game.camera.x, this.y - 10);
-        ctx.fillText("y: " + this.y, this.x - this.game.camera.x, this.y - 20);
-        ctx.fillText("state: " + this.state, this.x - this.game.camera.x, this.y - 30);
-        ctx.fillText("facing: " + this.facing, this.x - this.game.camera.x, this.y - 40);
-        ctx.fillText("isOnGround: " + this.isOnGround, this.x - this.game.camera.x, this.y - 50);
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+            // draw text of coordinates
+            ctx.font = "10px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText("x: " + this.x, this.x - this.game.camera.x, this.y - 10);
+            ctx.fillText("y: " + this.y, this.x - this.game.camera.x, this.y - 20);
+            ctx.fillText("state: " + this.state, this.x - this.game.camera.x, this.y - 30);
+            ctx.fillText("facing: " + this.facing, this.x - this.game.camera.x, this.y - 40);
+            ctx.fillText("isOnGround: " + this.isOnGround, this.x - this.game.camera.x, this.y - 50);
+        }
     };
 
 }

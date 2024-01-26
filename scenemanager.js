@@ -21,8 +21,7 @@ class SceneManager {
     };
 
     update() {
-        // TODO: offset by lance width?
-        const midpoint = PARAMS.CANVAS_WIDTH / 2;
+        const midpoint = PARAMS.CANVAS_WIDTH / 2 - this.lance.width / 2;
 
         if (this.x < this.game.entities[1].x - midpoint) this.x = this.game.entities[1].x - midpoint;
     };
