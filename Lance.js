@@ -119,7 +119,7 @@ class Lance {
                     this.velocity.y = 0;
                     this.updateBoundingBox();
                     this.ledgeR = entity.BB.right;
-                    this.ledgeL = entity.BB.left;
+                    this.ledgeL = entity.BB.left - this.width;
                 }
         }
         });
