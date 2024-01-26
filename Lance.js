@@ -64,7 +64,11 @@ class Lance {
     };
 
     updateBoundingBox() {
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+        if (this.facing === 0) {
+            this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2 + 10, this.height);
+        } else {
+            this.BB = new BoundingBox(this.x - 5, this.y, this.width - this.width/2 + 10, this.height);
+        }
     };
 
     updateLastBoundingBox() {
@@ -118,8 +122,9 @@ class Lance {
                     this.y = entity.BB.y - this.BB.height;
                     this.velocity.y = 0;
                     this.updateBoundingBox();
-                    this.ledgeR = entity.BB.right;
-                    this.ledgeL = entity.BB.left - this.width;
+                    // Magic numbers to align more with feet
+                    this.ledgeR = entity.BB.right - 10;
+                    this.ledgeL = entity.BB.left - this.width + 50;
                 }
         }
         });
@@ -160,7 +165,7 @@ class Lance {
     draw(ctx) {
         if (this.state == 0) { // if idle
             if (this.facing == 1) { // if facing left
-                ctx.drawImage(this.spritesheet, 108, 39, 30, 34, this.x - this.game.camera.x, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
+                ctx.drawImage(this.spritesheet, 108, 39, 30, 34, this.x - this.game.camera.x - this.width/2 + 16, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             } else { // facing right
                 ctx.drawImage(this.spritesheet, 108, 154, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             }
