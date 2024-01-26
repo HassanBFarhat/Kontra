@@ -10,7 +10,6 @@ class BoundingBox {
 
     collide(oth) {
         return this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top;
-
     };
 
     overlap(oth) {

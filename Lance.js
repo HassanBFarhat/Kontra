@@ -4,17 +4,8 @@ class Lance {
 
         this.game.lance = this;
 
-
-
-
-
         // TODO: Proper sprite alignment and framecount for animation
         // this.animator = new Animator(ASSET_MANAGER.getAsset("./sprites/Lance.png"), 108, 154, 28, 34, 1, 0.5, 1, false, true);
-
-
-
-
-
 
         //spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Lance.png");
@@ -29,6 +20,8 @@ class Lance {
         this.WALK_SPEED = 300;
         this.FALL_SPEED = 200;
         this.JUMP_TICK = 0;
+        this.width = 30 * PARAMS.SCALE;
+        this.height = 34 * PARAMS.SCALE;
 
         this.updateBoundingBox();
 
@@ -69,9 +62,7 @@ class Lance {
     };
 
     updateBoundingBox() {
-        if (this.size === 0 || this.size === 3) {
-            this.BB = new Boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
-        }
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
     };
 
     updateLastBoundingBox() {
@@ -115,13 +106,45 @@ class Lance {
             this.facing = 1; //left
         }
 
-        // if (this.state != 2 && !this.isOnGround && this.y < PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
-        //     this.y += this.FALL_SPEED * TICK;
-        // }
+        this.updateBoundingBox();
+        let ledge = 0; 
+        // Check Collisions
+        
+        this.game.entities.forEach(entity => { 
+            if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
+                // if (entity instanceof Ground) {
+                //     console.log("Ground TOP: " + entity.BB.top)
+                //     console.log("Bottom" + this.lastBB.bottom)
+                // }
+                if (this.state != 2 && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
+                    this.isOnGround = true;
+                    this.y = entity.BB.y - this.BB.height;
+                    console.log(entity.BB.top)
+                    this.velocity.y = 0;
+                    console.log("On Ground");
+                    this.updateBoundingBox();
+                    ledge = this.BB.right;
+                }
+        }
+        });
 
-        // if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
-        //     this.isOnGround = true;
-        // }
+        this.updateLastBoundingBox();
+
+        if (this.isOnGround && this.x > ledge) { // walked off ledge
+            this.isOnGround = false;
+        }
+        
+        if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) {
+            this.isOnGround = true;
+        }
+
+        // Fall unless on ground or jumping
+        if (this.state != 2 && !this.isOnGround) {
+            this.y += this.FALL_SPEED * TICK;
+        }
+      
+
+
 
 
         // // update position
@@ -157,6 +180,7 @@ class Lance {
         // console.log("\nFACING: " + this.facing);
     };
 
+
     draw(ctx) {
         // this.animator.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         
@@ -169,7 +193,15 @@ class Lance {
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
-        
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        // draw text of coordinates
+        ctx.font = "10px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText("x: " + this.x, this.x - this.game.camera.x, this.y - 10);
+        ctx.fillText("y: " + this.y, this.x - this.game.camera.x, this.y - 20);
+        ctx.fillText("state: " + this.state, this.x - this.game.camera.x, this.y - 30);
+        ctx.fillText("facing: " + this.facing, this.x - this.game.camera.x, this.y - 40);
+        ctx.fillText("isOnGround: " + this.isOnGround, this.x - this.game.camera.x, this.y - 50);
     };
 
 }

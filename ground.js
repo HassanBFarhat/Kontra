@@ -1,4 +1,4 @@
-class ground {
+class Ground {
     constructor(game, x, y, w, h) {
         Object.assign(this, { game, x, y, w, h});
 
@@ -14,6 +14,9 @@ class ground {
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Green';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+            ctx.color = 'Green';
+            ctx.fillText("("+this.x +","+this.y+")", this.x - this.game.camera.x, this.y);
+            ctx.fillText("BB top: " + this.BB.top, this.x - this.game.camera.x, this.y - 10);
         }
     };
 };
