@@ -16,9 +16,11 @@ ASSET_MANAGER.downloadAll(function () {
 	PARAMS.CANVAS_HEIGHT = canvas.height;
 	gameEngine.addEntity(new Background(gameEngine, 0, 32));
 	gameEngine.addEntity(new Lance(gameEngine, 0, 0));
-	gameEngine.addEntity(new Ground(gameEngine, 0, 515, 264, 50));
-	gameEngine.addEntity(new Ground(gameEngine, 300, 615, 264, 50));
-	gameEngine.addEntity(new Ground(gameEngine, 600, 515, 264, 50));
+	gameEngine.addEntity(new Ground(gameEngine, 0, 515, 3585, 50));
+	gameEngine.addEntity(new Ground(gameEngine, 3850, 515, 2800, 50));
+	gameEngine.addEntity(new Ground(gameEngine, 6790, 515, 895, 50));
+	gameEngine.addEntity(new Ground(gameEngine, 7685, 640, 530, 50));
+	gameEngine.addEntity(new Ground(gameEngine, 8235, 515, 5231, 400));
 	gameEngine.addEntity(new SceneManager(gameEngine));
 	gameEngine.init(ctx);
 	
