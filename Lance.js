@@ -136,6 +136,10 @@ class Lance {
     update() {
         const TICK = this.game.clockTick;
 
+        if (this.isOnGround && this.game.down && this.game.A) { // Drop from platform
+            this.isOnGround = false;
+        }
+
         if (this.game.A && this.isOnGround) { // Jump
             this.state = 2;
             this.isOnGround = false;
@@ -194,7 +198,7 @@ class Lance {
             this.isOnGround = true;
             this.isFalling = false;
         }
-
+        
         // Fall unless on ground or jumping
         if (this.state != 2 && !this.isOnGround) {
             this.y += this.FALL_SPEED * TICK;
