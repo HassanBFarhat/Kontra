@@ -136,7 +136,7 @@ class Lance {
     update() {
         const TICK = this.game.clockTick;
 
-        if (this.isOnGround && this.game.down && this.game.A) { // Drop from platform
+        if (this.isOnGround && !this.game.left && !this.game.right && this.game.down && this.game.A) { // Drop from platform
             this.isOnGround = false;
         }
 
