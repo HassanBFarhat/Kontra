@@ -5,11 +5,17 @@ class Lance {
         this.game.lance = this;
 
         //spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Lance.png");
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Lance.png");
+        this.spritesheet2 = ASSET_MANAGER.getAsset("./sprites/Lance_2.png");
 
         //Lance's state variables
         this.facing = 0; // 0 = right, 1 = left
-        this.state = 0; // 0 = idle, 1 = walking, = 2 = jumping 3 = falling
+        /*
+         * 0 = idle, 1 = walking, = 2 = jumping, 3 = falling, 4 = walk diagonal up left, 
+         * 5 = walk diagonal down left, 6 = walk diagonal up right, 
+         * 7 = walk diagonal down right, 8 = crouching, 9 = looking up, 10 = dead
+        */
+        this.state = 0; 
         this.dead = false;
         this.isOnGround = false;
         this.isFalling = true;
@@ -37,30 +43,78 @@ class Lance {
 
         //all animations here
 
-        for (let i = 0; i < 3; i++) {   // 3 states
+        for (let i = 0; i < 11; i++) {   // 11 states
             this.animations.push([]);
             for (let j = 0; j < 2; j++) {   // 2 directions
                 this.animations[i].push([]);
             }
         }
 
-        //idle
-        //idle facing right = 0
-        this.animations[0][0] = new Animator(this.spritesheet, 108, 154, 30, 34, 1, 0.1, 30, false, true);
-        //idle facing left = 1
-        this.animations[0][1] = new Animator(this.spritesheet, 108, 39, 30, 34, 1, 0.1, 30, false, true);
+        /*
+         OLD ANIMATOR FOR OLD SPRITESHEET 
+         */
+        // //idle
+        // //idle facing right = 0
+        // this.animations[0][0] = new Animator(this.spritesheet, 108, 154, 30, 34, 1, 0.1, 30, false, true);
+        // //idle facing left = 1
+        // this.animations[0][1] = new Animator(this.spritesheet, 108, 39, 30, 34, 1, 0.1, 30, false, true);
 
-        //walking
-        //walking facing right = 0
-        this.animations[1][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
-        //walking facing left = 1
-        this.animations[1][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
+        // //walking
+        // //walking facing right = 0
+        // this.animations[1][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
+        // //walking facing left = 1
+        // this.animations[1][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
 
-        //jumping
-        //jumping facing right = 0
-        this.animations[2][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
-        //jumping facing left = 1
-        this.animations[2][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
+        // //jumping
+        // //jumping facing right = 0
+        // this.animations[2][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
+        // //jumping facing left = 1
+        // this.animations[2][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
+
+
+        /*
+        NEW ANIMATORS FOR NEW SPRITESHEET
+        */
+
+        // idle right
+        this.animations[0][0] = new Animator(this.spritesheet2, 105, 610, 30, 34, 1, 0.1, 30, false, true);
+        // idle left
+        this.animations[0][1] = new Animator(this.spritesheet2, 105, 495, 30, 34, 1, 0.1, 30, false, true);
+
+        // walk right
+        this.animations[1][0] = new Animator(this.spritesheet2, 175, 610, 30, 34, 6, 0.1, 30, false, true);
+        // walk left
+        this.animations[1][1] = new Animator(this.spritesheet2, 175, 495, 30, 34, 6, 0.1, 30, false, true);
+
+        // jump right
+        this.animations[2][0] = new Animator(this.spritesheet2, 38, 825, 18, 22, 2, 0.1, 30, false, true);
+        // jump left
+        this.animations[2][1] = new Animator(this.spritesheet2, 38, 725, 18, 22, 2, 0.1, 30, true, true); //reverse bc sprites reversed on sheet
+
+        // walk diagonal left/up
+        this.animations[4][1] = new Animator(this.spritesheet2, 272, 38, 22, 36, 3, 0.1, 36.4, true, true); //reverse bc sprites reversed on sheet
+        // walk diagonal left/down
+        this.animations[5][1] = new Animator(this.spritesheet2, 90, 38, 25, 36, 3, 0.1, 36.4, true, true); //reverse bc sprites reversed on sheet
+        // walk diagonal right/up
+        this.animations[6][0] = new Animator(this.spritesheet2, 38, 164, 22, 36, 3, 0.1, 36.4, false, true);
+        // walk diagonal right/down
+        this.animations[7][0] = new Animator(this.spritesheet2, 212, 164, 25, 36, 3, 0.1, 36.4, false, true);
+
+        // crouch left
+        this.animations[8][1] = new Animator(this.spritesheet2, 38, 495, 34, 18, 1, 0.1, 30, false, true);
+        // crouch right
+        this.animations[8][0] = new Animator(this.spritesheet2, 38, 610, 34, 18, 1, 0.1, 30, false, true);
+
+        // look up left
+        this.animations[9][1] = new Animator(this.spritesheet2, 38, 38, 18, 45, 1, 0.1, 30, false, true);
+        // look up right
+        this.animations[9][0] = new Animator(this.spritesheet2, 395, 164, 18, 45, 1, 0.1, 30, false, true);
+
+        // dead left
+        this.animations[10][1] = new Animator(this.spritesheet2, 38, 288, 34, 25, 3, 0.1, 30, true, true); //reverse bc sprites reversed on sheet
+        // dead right
+        this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 25, 3, 0.1, 30, false, true);
+
     };
 
     updateBoundingBox() {
@@ -155,8 +209,15 @@ class Lance {
 
         // update state
         if (this.state !== 2) {
-            if (this.game.left) this.state = 1;
+            if (this.game.right && this.game.up) this.state = 6;
+            else if (this.game.right && this.game.down) this.state = 7;
+            else if (this.game.left && this.game.up) this.state = 4;
+            else if (this.game.left && this.game.down) this.state = 5;
+            else if (this.game.left) this.state = 1;
             else if (this.game.right) this.state = 1;
+            else if (this.game.down) this.state = 8;
+            else if (this.game.up) this.state = 9
+            else if (this.dead) this.state = 10;
             else this.state = 0;
         }
     };
@@ -165,9 +226,13 @@ class Lance {
     draw(ctx) {
         if (this.state == 0) { // if idle
             if (this.facing == 1) { // if facing left
-                ctx.drawImage(this.spritesheet, 108, 39, 30, 34, this.x - this.game.camera.x - this.width/2 + 16, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
+                // ctx.drawImage(this.spritesheet, 108, 39, 30, 34, this.x - this.game.camera.x - this.width/2 + 16, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
+
+                ctx.drawImage(this.spritesheet2, 105, 495, 30, 34, this.x - this.game.camera.x - this.width/2 + 16, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             } else { // facing right
-                ctx.drawImage(this.spritesheet, 108, 154, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
+                // ctx.drawImage(this.spritesheet, 108, 154, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
+
+                ctx.drawImage(this.spritesheet2, 105, 610, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             }
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);

@@ -1,7 +1,8 @@
 const ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("backgrounds/random kontra level.png");
-ASSET_MANAGER.queueDownload("./sprites/Lance.png")
+ASSET_MANAGER.queueDownload("./sprites/Lance.png");
+ASSET_MANAGER.queueDownload("./sprites/Lance_2.png")
 ASSET_MANAGER.queueDownload("./sprites/rectangle.png")
 
 ASSET_MANAGER.downloadAll(function () {
