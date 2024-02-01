@@ -15,10 +15,11 @@ class Lance {
          * 5 = walk diagonal down left, 6 = walk diagonal up right, 
          * 7 = walk diagonal down right, 8 = crouching, 9 = looking up, 10 = dead
         */
-        this.state = 0; 
+        this.state = 2; // Start in jumping state
         this.dead = false;
         this.isOnGround = false;
         this.isFalling = true;
+        this.isDropping = false; // Dropping from platform
 
         this.velocity = {x: 0, y: 0};
         this.WALK_SPEED = 300;
@@ -140,6 +141,8 @@ class Lance {
         if (this.game.A && this.isOnGround) {
             if (!this.game.right && !this.game.left && this.game.down) { // Drop from platform
                 this.isOnGround = false;
+                this.isFalling = true;
+                this.isDropping = true;
             } else { // Jump
                 this.state = 2;
                 this.isOnGround = false;
@@ -151,11 +154,9 @@ class Lance {
         // Jump action
         if (this.state === 2) {
             if (this.JUMP_TICK > 0) {
-                console.log("Jumping");
                 this.JUMP_TICK -= TICK;
                 this.y -= this.FALL_SPEED * TICK
             } else {
-                console.log("Falling")
                 this.JUMP_TICK = 0;
                 this.state = 3; // Falling
                 this.isFalling = true;
@@ -163,7 +164,7 @@ class Lance {
         }
 
         // Fall unless on ground or jumping
-        if (this.state != 2 && !this.isOnGround) {
+        if (this.state != 2 && this.isFalling) {
             this.state = 3;
             this.y += this.FALL_SPEED * TICK;
         }
@@ -182,10 +183,13 @@ class Lance {
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
                 if (this.isFalling && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
-                    this.isOnGround = true;
-                    this.isFalling = false;
-                    this.y = entity.BB.y - this.BB.height;
-                    this.velocity.y = 0;
+                    if (!this.isDropping) {
+                        this.isOnGround = true;
+                        this.isFalling = false;
+                        this.y = entity.BB.y - this.BB.height;
+                        this.velocity.y = 0; 
+                    }
+                    this.isDropping = false;
                     this.updateBoundingBox();
                     // Magic numbers to align more with feet
                     this.ledgeR = entity.BB.right - 10;
@@ -216,7 +220,8 @@ class Lance {
       
         // update state
         if (this.state !== 2) {
-            if (this.game.right && this.game.up) this.state = 6;
+            if (this.isFalling) {this.state = 2;} // This is stupid
+            else if (this.game.right && this.game.up) this.state = 6;
             else if (this.game.right && this.game.down) this.state = 7;
             else if (this.game.left && this.game.up) this.state = 4;
             else if (this.game.left && this.game.down) this.state = 5;
@@ -227,6 +232,7 @@ class Lance {
             else if (this.dead) this.state = 10;
             else this.state = 0;
         }
+    
     };
 
 
