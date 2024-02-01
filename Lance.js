@@ -201,6 +201,7 @@ class Lance {
         
         // Fall unless on ground or jumping
         if (this.state != 2 && !this.isOnGround) {
+            this.state = 2;
             this.y += this.FALL_SPEED * TICK;
         }
       
