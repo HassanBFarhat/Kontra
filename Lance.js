@@ -169,7 +169,6 @@ class Lance {
             this.facing = 1; //left
         }
 
-        
         // Check Collisions
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
@@ -184,12 +183,19 @@ class Lance {
                     this.ledgeR = entity.BB.right - 10;
                     this.ledgeL = entity.BB.left - this.width + 50;
                 } else if (this.isOnGround && entity instanceof Ground && this.lastBB.right >= entity.BB.left && this.lastBB.left < entity.BB.left) { // Left of wall
-                    this.x = entity.BB.left - this.BB.width-20; // TODO: MAKE THIS NOT SUCK
-                } else if (this.isOnGround && entity instanceof Ground && this.lastBB.left > entity.BB.right) { // Right of wall
-                    this.x = entity.BB.right + 7// TODO: MAKE THIS NOT SUCK
+                    this.x = entity.BB.left - this.BB.width;
+                    this.velocity.x = 0;
+                    this.updateBoundingBox();
+                    console.log("Right of wall")
+                } else if (this.isOnGround && entity instanceof Ground && this.lastBB.left >= entity.BB.right - 20) { // Right of wall
+                    this.x = entity.BB.right;
+                    this.velocity.x = 0;
+                    this.updateBoundingBox();
+                   console.log("Left of wall")
                 }
             }
-        });
+        }
+        );
 
         this.updateLastBoundingBox();
 
