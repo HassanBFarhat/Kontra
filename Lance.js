@@ -87,9 +87,9 @@ class Lance {
         this.animations[1][1] = new Animator(this.spritesheet2, 175, 495, 30, 34, 6, 0.1, 30, false, true);
 
         // jump right
-        this.animations[2][0] = new Animator(this.spritesheet2, 38, 825, 20, 22, 2, 0.1, 36, false, true);
+        this.animations[2][0] = new Animator(this.spritesheet2, 38, 825, 18, 22, 2, 0.1, 30, false, true);
         // jump left
-        this.animations[2][1] = new Animator(this.spritesheet2, 38, 725, 20, 22, 2, 0.1, 36, true, true); //reverse bc sprites reversed on sheet
+        this.animations[2][1] = new Animator(this.spritesheet2, 38, 725, 18, 22, 2, 0.1, 30, true, true); //reverse bc sprites reversed on sheet
 
         // walk diagonal left/up
         this.animations[4][1] = new Animator(this.spritesheet2, 272, 38, 22, 36, 3, 0.1, 36.4, true, true); //reverse bc sprites reversed on sheet
@@ -183,8 +183,12 @@ class Lance {
                     // Magic numbers to align more with feet
                     this.ledgeR = entity.BB.right - 10;
                     this.ledgeL = entity.BB.left - this.width + 50;
+                } else if (this.isOnGround && entity instanceof Ground && this.lastBB.right >= entity.BB.left && this.lastBB.left < entity.BB.left) { // Left of wall
+                    this.x = entity.BB.left - this.BB.width-20; // TODO: MAKE THIS NOT SUCK
+                } else if (this.isOnGround && entity instanceof Ground && this.lastBB.left > entity.BB.right) { // Right of wall
+                    this.x = entity.BB.right + 7// TODO: MAKE THIS NOT SUCK
                 }
-        }
+            }
         });
 
         this.updateLastBoundingBox();
@@ -249,5 +253,4 @@ class Lance {
             ctx.fillText("isFalling: " + this.isFalling, this.x - this.game.camera.x, this.y - 60);
         }
     };
-
 }
