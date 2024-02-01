@@ -136,17 +136,19 @@ class Lance {
     update() {
         const TICK = this.game.clockTick;
 
-        if (this.isOnGround && !this.game.right && !this.game.left && this.game.down && this.game.A) { // Drop from platform
-            this.isOnGround = false;
+        // A button
+        if (this.game.A && this.isOnGround) {
+            if (!this.game.right && !this.game.left && this.game.down) { // Drop from platform
+                this.isOnGround = false;
+            } else { // Jump
+                this.state = 2;
+                this.isOnGround = false;
+                this.isFalling = false;
+                this.JUMP_TICK = 1;
+            }
         }
 
-        if (this.game.A && this.isOnGround) { // Jump
-            this.state = 2;
-            this.isOnGround = false;
-            this.isFalling = false;
-            this.JUMP_TICK = 1;
-        }
-
+        // Jump action
         if (this.state === 2) {
             if (this.JUMP_TICK > 0) {
                 console.log("Jumping");
@@ -158,6 +160,12 @@ class Lance {
                 this.state = 3; // Falling
                 this.isFalling = true;
             }
+        }
+
+        // Fall unless on ground or jumping
+        if (this.state != 2 && !this.isOnGround) {
+            this.state = 3;
+            this.y += this.FALL_SPEED * TICK;
         }
 
         // Walking
@@ -185,17 +193,14 @@ class Lance {
                 } else if (this.isOnGround && entity instanceof Ground && this.lastBB.right >= entity.BB.left && this.lastBB.left < entity.BB.left) { // Left of wall
                     this.x = entity.BB.left - this.BB.width;
                     this.velocity.x = 0;
-                    this.updateBoundingBox();
-                    console.log("Right of wall")
+                    this.updateBoundingBox(); // Needed?
                 } else if (this.isOnGround && entity instanceof Ground && this.lastBB.left >= entity.BB.right - 20) { // Right of wall
                     this.x = entity.BB.right;
                     this.velocity.x = 0;
-                    this.updateBoundingBox();
-                   console.log("Left of wall")
+                    this.updateBoundingBox(); // Needed?
                 }
             }
-        }
-        );
+        });
 
         this.updateLastBoundingBox();
 
@@ -207,12 +212,6 @@ class Lance {
         if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) { // hit bottom of screen
             this.isOnGround = true;
             this.isFalling = false;
-        }
-        
-        // Fall unless on ground or jumping
-        if (this.state != 2 && !this.isOnGround) {
-            this.state = 2;
-            this.y += this.FALL_SPEED * TICK;
         }
       
         // update state
@@ -242,6 +241,8 @@ class Lance {
 
                 ctx.drawImage(this.spritesheet2, 105, 610, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             }
+        } else if (this.state === 8) { // crouching  
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 16*PARAMS.SCALE, PARAMS.SCALE);
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
