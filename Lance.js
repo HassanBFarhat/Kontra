@@ -19,6 +19,7 @@ class Lance {
         this.dead = false;
         this.isOnGround = false;
         this.isFalling = true;
+        this.isJumping = true;
         this.isDropping = false; // Dropping from platform
 
         this.velocity = {x: 0, y: 0};
@@ -147,6 +148,7 @@ class Lance {
                 this.state = 2;
                 this.isOnGround = false;
                 this.isFalling = false;
+                this.isJumping = true;
                 this.JUMP_TICK = 1;
             }
         }
@@ -186,6 +188,7 @@ class Lance {
                     if (!this.isDropping) {
                         this.isOnGround = true;
                         this.isFalling = false;
+                        this.isJumping = false;
                         this.y = entity.BB.y - this.BB.height;
                         this.velocity.y = 0; 
                     }
@@ -216,11 +219,12 @@ class Lance {
         if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) { // hit bottom of screen
             this.isOnGround = true;
             this.isFalling = false;
+            this.isJumping = false;
         }
       
         // update state
         if (this.state !== 2) {
-            if (this.isFalling) {this.state = 2;} // This is stupid
+            if (this.isJumping) {this.state = 2;} // This is stupid
             else if (this.game.right && this.game.up) this.state = 6;
             else if (this.game.right && this.game.down) this.state = 7;
             else if (this.game.left && this.game.up) this.state = 4;
