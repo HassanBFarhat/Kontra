@@ -87,9 +87,9 @@ class Lance {
         this.animations[1][1] = new Animator(this.spritesheet2, 175, 495, 30, 34, 6, 0.1, 30, false, true);
 
         // jump right
-        this.animations[2][0] = new Animator(this.spritesheet2, 38, 825, 18, 22, 2, 0.1, 30, false, true);
+        this.animations[2][0] = new Animator(this.spritesheet2, 38, 825, 20, 22, 2, 0.1, 36, false, true);
         // jump left
-        this.animations[2][1] = new Animator(this.spritesheet2, 38, 725, 18, 22, 2, 0.1, 30, true, true); //reverse bc sprites reversed on sheet
+        this.animations[2][1] = new Animator(this.spritesheet2, 38, 725, 20, 22, 2, 0.1, 36, true, true); //reverse bc sprites reversed on sheet
 
         // walk diagonal left/up
         this.animations[4][1] = new Animator(this.spritesheet2, 272, 38, 22, 36, 3, 0.1, 36.4, true, true); //reverse bc sprites reversed on sheet
