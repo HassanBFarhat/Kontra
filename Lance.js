@@ -136,7 +136,7 @@ class Lance {
     update() {
         const TICK = this.game.clockTick;
 
-        if (this.isOnGround && this.game.down && this.game.A) { // Drop from platform
+        if (this.isOnGround && !this.game.right && !this.game.left && this.game.down && this.game.A) { // Drop from platform
             this.isOnGround = false;
         }
 
@@ -204,13 +204,6 @@ class Lance {
             this.y += this.FALL_SPEED * TICK;
         }
       
-
-        // // update position
-        // this.x += this.velocity.x * TICK * PARAMS.SCALE;
-        // this.y += this.velocity.y * TICK * PARAMS.SCALE;
-        // this.updateLastBB();
-        // this.updateBB();     
-
         // update state
         if (this.state !== 2) {
             if (this.game.right && this.game.up) this.state = 6;

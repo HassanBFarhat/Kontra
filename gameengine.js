@@ -11,10 +11,6 @@ class GameEngine {
         this.right = false;
         this.up = false;
         this.down = false;
-        this.diagonalUpLeft = false;
-        this.diagonalDownLeft = false;
-        this.diagonalUpRight = false;
-        this.diagonalDownRight = false;
         this.A = false;
         this.B = false;
 
@@ -76,22 +72,6 @@ class GameEngine {
                 case "ArrowDown":
                 case "KeyS":
                     that.down = true;
-                    break;
-                case "ArrowLeft" && "ArrowUp":
-                case "KeyA" && "KeyW":
-                    that.diagonalUpLeft = true;
-                    break;
-                case "ArrowLeft" && "ArrowDown":
-                case "KeyA" && "KeyS":
-                    that.diagonalDownLeft = true;
-                    break;
-                case "ArrowRight" && "ArrowUp":
-                case "KeyD" && "KeyW":
-                    that.diagonalUpRight = true;
-                    break;
-                case "ArrowRight" && "ArrowDown":
-                case "KeyD" && "KeyS":
-                    that.diagonalDownRight = true;
                     break;
                 case "KeyZ":
                 case "Comma":
