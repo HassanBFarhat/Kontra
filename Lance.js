@@ -180,6 +180,14 @@ class Lance {
             this.facing = 1; //left
         }
 
+
+        /*
+
+        PLACE LOGIC FOR FIRING BULLET HERE
+
+        */
+
+
         // Check Collisions
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 

@@ -13,6 +13,18 @@ function hsl(h, s, l) {
     return "hsl(" + h + "," + s + "%," + l + "%)";
 };
 
+function distance(A, B) {
+    return Math.sqrt((B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y));
+}
+
+function collide(A, B) {
+    return (distance(A, B) < A.radius + B.radius);
+}
+
+function canSee(A, B) {
+    return (distance(A, B) < A.visualRadius + B.radius);
+}
+
 // creates an alias for requestAnimationFrame for backwards compatibility
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
