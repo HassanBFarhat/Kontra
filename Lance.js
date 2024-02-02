@@ -253,7 +253,12 @@ class Lance {
             }
         } else if (this.state === 8) { // crouching  
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 16*PARAMS.SCALE, PARAMS.SCALE);
-        } else {
+        }
+
+        else if (this.state === 9) {
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + -11 *PARAMS.SCALE, PARAMS.SCALE);
+        }
+            else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
 
