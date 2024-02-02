@@ -255,7 +255,7 @@ class Lance {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 16*PARAMS.SCALE, PARAMS.SCALE);
         }
 
-        else if (this.state === 9) {
+        else if (this.state === 9) { //looking directly up
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + -11 *PARAMS.SCALE, PARAMS.SCALE);
         }
             else {
