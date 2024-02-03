@@ -102,22 +102,6 @@ class GameEngine {
                 case "KeyS":
                     that.down = false;
                     break;
-                case "ArrowLeft" && "ArrowUp":
-                case "KeyA" && "KeyW":
-                    that.diagonalUpLeft = false;
-                    break;
-                case "ArrowLeft" && "ArrowDown":
-                case "KeyA" && "KeyS":
-                    that.diagonalDownLeft = false;
-                    break;
-                case "ArrowRight" && "ArrowUp":
-                case "KeyD" && "KeyW":
-                    that.diagonalUpRight = false;
-                    break;
-                case "ArrowRight" && "ArrowDown":
-                case "KeyD" && "KeyS":
-                    that.diagonalDownRight = false;
-                    break;
                 case "KeyZ":
                 case "Comma":
                     that.B = false;

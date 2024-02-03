@@ -4,8 +4,6 @@ class Lance {
 
         this.game.lance = this;
 
-        //spritesheet
-        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Lance.png");
         this.spritesheet2 = ASSET_MANAGER.getAsset("./sprites/Lance_2.png");
 
         //Lance's state variables
@@ -39,6 +37,9 @@ class Lance {
         //Lance's Animations
         this.animations = [];
         this.loadAnimations();
+
+        this.elapsedTime = 0;
+        this.fireRate = 0.002 // half a second
     };
 
     loadAnimations() {
@@ -51,32 +52,6 @@ class Lance {
                 this.animations[i].push([]);
             }
         }
-
-        /*
-         OLD ANIMATOR FOR OLD SPRITESHEET 
-         */
-        // //idle
-        // //idle facing right = 0
-        // this.animations[0][0] = new Animator(this.spritesheet, 108, 154, 30, 34, 1, 0.1, 30, false, true);
-        // //idle facing left = 1
-        // this.animations[0][1] = new Animator(this.spritesheet, 108, 39, 30, 34, 1, 0.1, 30, false, true);
-
-        // //walking
-        // //walking facing right = 0
-        // this.animations[1][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
-        // //walking facing left = 1
-        // this.animations[1][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
-
-        // //jumping
-        // //jumping facing right = 0
-        // this.animations[2][0] = new Animator(this.spritesheet, 170, 154, 30, 34, 6, 0.1, 30, false, true);
-        // //jumping facing left = 1
-        // this.animations[2][1] = new Animator(this.spritesheet, 170, 39, 30, 34, 6, 0.1, 30, false, true);
-
-
-        /*
-        NEW ANIMATORS FOR NEW SPRITESHEET
-        */
 
         // idle right
         this.animations[0][0] = new Animator(this.spritesheet2, 105, 610, 30, 34, 1, 0.1, 30, false, true);
@@ -138,6 +113,8 @@ class Lance {
     update() {
         const TICK = this.game.clockTick;
 
+        this.elapsedTime += TICK;
+
         // A button
         if (this.game.A && this.isOnGround) {
             if (!this.game.right && !this.game.left && this.game.down) { // Drop from platform
@@ -186,6 +163,22 @@ class Lance {
         PLACE LOGIC FOR FIRING BULLET HERE
 
         */
+        // for (let i = 0; i < this.game.entities.length; i++) {
+        //     let ent = this.game.entities[i];
+        //     // if ((ent instanceof Soldier || ent instanceof Sniper) && canSee(this, ent) && this.elapsedTime > this.fireRate) {
+        //     //     this.elapsedTime = 0;
+        //     //     this.game.addEntity(new Bullet(this.game, 120, 432, true));
+        //     // }
+
+        //     if (ent instanceof Soldier && canSee(this, ent) && this.elapsedTime > this.fireRate && this.game.B) {
+        //         this.elapsedTime = 0;
+        //         this.game.addEntity(new Bullet(this.game, 120, 432, false, true));
+        //     }
+        // } 
+        if (this.game.B) {
+            this.game.addEntity(new Bullet(this.game, 120, 432, false, true));
+        }
+
 
 
         // Check Collisions
@@ -251,22 +244,15 @@ class Lance {
     draw(ctx) {
         if (this.state == 0) { // if idle
             if (this.facing == 1) { // if facing left
-                // ctx.drawImage(this.spritesheet, 108, 39, 30, 34, this.x - this.game.camera.x - this.width/2 + 16, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
-
                 ctx.drawImage(this.spritesheet2, 105, 495, 30, 34, this.x - this.game.camera.x - this.width/2 + 16, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             } else { // facing right
-                // ctx.drawImage(this.spritesheet, 108, 154, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
-
                 ctx.drawImage(this.spritesheet2, 105, 610, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             }
         } else if (this.state === 8) { // crouching  
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 16*PARAMS.SCALE, PARAMS.SCALE);
-        }
-
-        else if (this.state === 9) { //looking directly up
+        } else if (this.state === 9) { //looking directly up
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 11 *PARAMS.SCALE, PARAMS.SCALE);
-        }
-            else {
+        } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
 
