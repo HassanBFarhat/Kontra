@@ -180,7 +180,7 @@ class Lance {
             let maxBullets = 5;
             if (this.bulletCount < maxBullets) {
                 this.bulletCount++;
-                this.game.addEntity(new Bullet(this.game, this.x+20*PARAMS.SCALE, 432, false, true));
+                this.game.addEntity(new Bullet(this.game, this.x + this.width, 432, false, true));
             }
         }
 

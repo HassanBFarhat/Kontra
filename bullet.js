@@ -1,7 +1,6 @@
 class Bullet {
     constructor(game, x, y, target, lanceTeam, heatSeeking) {
         Object.assign(this, {game, x, y, target, lanceTeam, heatSeeking});
-
         this.radius = 12;
         this.smooth = false;
         console.log("Spawned bullet at (" + this.x + "," + this.y + ")")
@@ -37,9 +36,8 @@ class Bullet {
 
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
-        console.log("bullet: " + this.velocity.x)
-        console.log("bulelt x" + this.x);
-        console.log(this.game.clockTick);
+        // console.log("bullet: " + this.velocity.x)
+        console.log("bullet x" + this.x);
 
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
@@ -75,6 +73,6 @@ class Bullet {
         //     }
         // }
 
-        this.animations[0].drawFrame(this.game.clockTick, ctx, this.game.camera.x + this.x, this.y - 8, PARAMS.SCALE);
+        this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 8, PARAMS.SCALE);
     };
 }
