@@ -5,8 +5,6 @@ class SceneManager {
         this.x = 0; // Scene Camera Position
 
         this.gameOver = false;
-        
-
 
         this.lance = new Lance(this.game, this.x, 154);
         this.lance.velocity = { x: 0, y: 0 };

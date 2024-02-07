@@ -4,14 +4,20 @@ class Bullet {
 
         this.radius = 12;
         this.smooth = false;
+        console.log("Spawned bullet at (" + this.x + "," + this.y + ")")
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet_1.png");
 
         let dist = distance(this, this.target);
+        console.log(this.x)
+        console.log("Dist: " + dist)
         this.maxSpeed = 500; // px per sec
 
-        this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
-
+        if (this.heatSeeking) {
+            this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
+        } else {
+            this.velocity = {x: this.maxSpeed, y: 0 };
+        }
         this.cache = []; 
 
         this.animations = [];
@@ -31,6 +37,9 @@ class Bullet {
 
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
+        console.log("bullet: " + this.velocity.x)
+        console.log("bulelt x" + this.x);
+        console.log(this.game.clockTick);
 
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
@@ -40,16 +49,16 @@ class Bullet {
             //     this.removeFromWorld = true;
             // }
 
-            if (this.lanceTeam && ent instanceof Solider && collide(this, ent)) {
-                ent.removeFromWorld = true; //FOR DEBUGGING
-                this.removeFromWorld = true;
-            }
+            // if (this.lanceTeam && ent instanceof Solider && collide(this, ent)) {
+            //     ent.removeFromWorld = true; //FOR DEBUGGING
+            //     this.removeFromWorld = true;
+            // }
 
 
-            if (!this.lanceTeam && ent instanceof Lance && collide(this, ent)) {
-                ent.removeFromWorld = true; //FOR DEBUGGING
-                this.removeFromWorld = true;
-            }
+            // if (!this.lanceTeam && ent instanceof Lance && collide(this, ent)) {
+            //     ent.removeFromWorld = true; //FOR DEBUGGING
+            //     this.removeFromWorld = true;
+            // }
 
         }
         // this.facing = getFacing(this.velocity);
@@ -57,15 +66,15 @@ class Bullet {
 
     draw(ctx) {
 
-        for (let i = 0; i < this.game.entities.length; i++) {
-            let ent = this.game.entities[i];
-            if (ent instanceof Lance) {
-                this.x = ent.x + 120;
-                this.y = ent.y + 53;
-                this.removeFromWorld = true;
-            }
-        }
+        // for (let i = 0; i < this.game.entities.length; i++) {
+        //     let ent = this.game.entities[i];
+        //     if (ent instanceof Lance) {
+        //         this.x = ent.x + 120;
+        //         this.y = ent.y + 53;
+        //         // this.removeFromWorld = true;
+        //     }
+        // }
 
-        this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 8, PARAMS.SCALE);
+        this.animations[0].drawFrame(this.game.clockTick, ctx, this.game.camera.x + this.x, this.y - 8, PARAMS.SCALE);
     };
 }

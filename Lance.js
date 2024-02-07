@@ -40,6 +40,7 @@ class Lance {
 
         this.elapsedTime = 0;
         this.fireRate = 0.002 // half a second
+        this.bulletCount = 0; // How many bullets have been fired (and still exist)
     };
 
     loadAnimations() {
@@ -176,7 +177,11 @@ class Lance {
         //     }
         // } 
         if (this.game.B) {
-            this.game.addEntity(new Bullet(this.game, 120, 432, false, true));
+            let maxBullets = 5;
+            if (this.bulletCount < maxBullets) {
+                this.bulletCount++;
+                this.game.addEntity(new Bullet(this.game, this.x+20*PARAMS.SCALE, 432, false, true));
+            }
         }
 
 
