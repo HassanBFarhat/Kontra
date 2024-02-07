@@ -5,7 +5,6 @@ ASSET_MANAGER.queueDownload("./sprites/Lance.png");
 ASSET_MANAGER.queueDownload("./sprites/Lance_2.png")
 ASSET_MANAGER.queueDownload("./sprites/bullet_1.png");
 ASSET_MANAGER.queueDownload("./sprites/Soldier.png");
-ASSET_MANAGER.queueDownload("./sprites/rectangle.png")
 
 ASSET_MANAGER.downloadAll(function () {
 	const gameEngine = new GameEngine();
