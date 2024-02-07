@@ -1,15 +1,12 @@
 class Bullet {
-    constructor(game, x, y, target, lanceTeam, heatSeeking) {
-        Object.assign(this, {game, x, y, target, lanceTeam, heatSeeking});
+    constructor(game, x, y, source, target, lanceTeam, heatSeeking) {
+        Object.assign(this, {game, x, y, source, target, lanceTeam, heatSeeking});
         this.radius = 12;
         this.smooth = false;
-        console.log("Spawned bullet at (" + this.x + "," + this.y + ")")
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet_1.png");
 
-        let dist = distance(this, this.target);
-        console.log(this.x)
-        console.log("Dist: " + dist)
+        let dist = distance(this, this.target); // NOTE: This is NaN if you have no target!
         this.maxSpeed = 500; // px per sec
 
         if (this.heatSeeking) {
@@ -36,11 +33,15 @@ class Bullet {
 
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
-        // console.log("bullet: " + this.velocity.x)
-        console.log("bullet x" + this.x);
 
-        for (let i = 0; i < this.game.entities.length; i++) {
-            let ent = this.game.entities[i];
+        // Remove bullet if passed right canvas boarder
+        if (this.x - this.game.camera.x > PARAMS.CANVAS_WIDTH) {
+            this.source.bulletCount--; // decrement source's bullet count
+            this.removeFromWorld = true;
+        }
+
+        // for (let i = 0; i < this.game.entities.length; i++) {
+        //     let ent = this.game.entities[i];
             // if (this.lanceTeam && (ent instanceof Solider || ent instanceof Sniper) && collide(this, ent)) {
             //     ent.hitpoints -= 10;
             //     ent.removeFromWorld = true; //FOR DEBUGGING
@@ -58,7 +59,7 @@ class Bullet {
             //     this.removeFromWorld = true;
             // }
 
-        }
+        // }
         // this.facing = getFacing(this.velocity);
     };
 
