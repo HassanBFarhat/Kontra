@@ -39,9 +39,10 @@ class Lance {
         this.loadAnimations();
 
         this.elapsedTime = 0;
-        this.fireRate = 0.002 // half a second
+        this.fireRate = 0.120; // how many seconds between bullets.
         this.bulletCount = 0; // How many bullets have been fired (and still exist)
         this.maxBullets = 5; // how many bullets allowed at once
+        this.lastBulletTime = 0;
     };
 
     loadAnimations() {
@@ -177,10 +178,13 @@ class Lance {
         //         this.game.addEntity(new Bullet(this.game, 120, 432, false, true));
         //     }
         // } 
+        console.log(this.lastBulletTime)
+        console.log(this.elapsedTime)
         if (this.game.B) {
-            if (this.bulletCount < this.maxBullets) {
+            if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
                 this.bulletCount++; // We give bullet `this` as source, so it can reduce bullet count when the bullet is removed
                 this.game.addEntity(new Bullet(this.game, this.x + this.width, 432, this, false, true));
+                this.lastBulletTime = this.elapsedTime;
             }
         }
 
