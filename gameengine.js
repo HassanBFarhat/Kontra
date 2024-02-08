@@ -33,7 +33,7 @@ class GameEngine {
         })();
     };
 
-    startInput() { // TODO: Implement diagonals 
+    startInput() {
         this.keyboardActive = false;
         var that = this;
 

@@ -9,7 +9,8 @@ class SceneManager {
         this.lance = new Lance(this.game, this.x, 154);
         this.lance.velocity = { x: 0, y: 0 };
         this.lance.state = 0; //loads in idle state
-    
+
+        this.debugCheckbox = document.getElementById("debug");
     };
 
     clearEntities() {
@@ -22,6 +23,9 @@ class SceneManager {
         const midpoint = PARAMS.CANVAS_WIDTH / 2 - this.lance.width / 2;
 
         if (this.x < this.game.entities[1].x - midpoint) this.x = this.game.entities[1].x - midpoint;
+
+        // Check if debug checkbox is checked
+        PARAMS.DEBUG = this.debugCheckbox.checked;
     };
  
     draw(ctx) {
