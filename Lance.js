@@ -182,7 +182,7 @@ class Lance {
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
                 this.bulletCount++; // We give bullet `this` as source, so it can reduce bullet count when the bullet is removed
-                this.game.addEntity(new Bullet(this.game, this.x + this.width, 432, this, false, true));
+                this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, true));
                 this.lastBulletTime = this.elapsedTime;
             }
         }
