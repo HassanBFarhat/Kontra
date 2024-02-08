@@ -185,7 +185,9 @@ class Lance {
                         this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + this.height/2 + 6 * PARAMS.SCALE, this, false, 225));
                         break;
                     case 8: // crouching
-                        if (this.facing === 0) { // right
+                        if (!this.isOnGround) { // Mid jump
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 20, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 270));
+                        } else if (this.facing === 0) { // right
                             this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 0));
                         } else {
                             this.game.addEntity(new Bullet(this.game, this.x, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 180));
