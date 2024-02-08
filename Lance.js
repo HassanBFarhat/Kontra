@@ -178,8 +178,7 @@ class Lance {
         //         this.game.addEntity(new Bullet(this.game, 120, 432, false, true));
         //     }
         // } 
-        console.log(this.lastBulletTime)
-        console.log(this.elapsedTime)
+
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
                 this.bulletCount++; // We give bullet `this` as source, so it can reduce bullet count when the bullet is removed
