@@ -15,9 +15,9 @@ class Lance {
         */
         this.state = 2; // Start in jumping state
         this.dead = false;
+        this.isSpawning = true;
         this.isOnGround = false;
-        this.isFalling = true;
-        this.isJumping = true;
+        this.isJumping = false;
         this.isDropping = false; // Dropping from platform
 
         this.velocity = {x: 0, y: 0};
@@ -115,75 +115,58 @@ class Lance {
 
     update() {
         const TICK = this.game.clockTick;
-
         this.elapsedTime += TICK;
 
         // A button
         if (this.game.A && this.isOnGround) {
             if (!this.game.right && !this.game.left && this.game.down) { // Drop from platform
                 this.isOnGround = false;
-                this.isFalling = true;
                 this.isDropping = true;
-            } else { // Jump
-                this.state = 2;
-                this.isOnGround = false;
-                this.isFalling = false;
+            } else if (!this.isJumping) { // Jump
                 this.isJumping = true;
                 this.JUMP_TICK = 1;
             }
         }
 
         // Jump action
-        if (this.state === 2) {
+        if (this.isJumping) {
             if (this.JUMP_TICK > 0) {
                 this.JUMP_TICK -= TICK;
                 this.y -= this.FALL_SPEED * TICK
-            } else {
-                this.JUMP_TICK = 0;
-                this.state = 3; // Falling
-                this.isFalling = true;
+            } else if (!this.isDropping) {
+                this.isJumping = false;
             }
         }
+      
+        // update state
+        if (this.game.right && this.game.up) this.state = 6;
+        else if (this.game.right && this.game.down) this.state = 7;
+        else if (this.game.left && this.game.up) this.state = 4;
+        else if (this.game.left && this.game.down) this.state = 5;
+        else if (this.game.left) this.state = 1;
+        else if (this.game.right) this.state = 1;
+        else if (this.game.down) this.state = 8;
+        else if (this.game.up) this.state = 9
+        else if (this.dead) this.state = 10;
+        else this.state = 0; // idle state;
 
-        // Fall unless on ground or jumping
-        if (this.state != 2 && this.isFalling) {
-            this.state = 3;
-            this.y += this.FALL_SPEED * TICK;
-        }
-
-        // Walking
+        // Movement
         if (this.game.right) {
             this.x += this.WALK_SPEED * TICK
-            this.facing = 0; //right
+            this.facing = 0; // right
         } else if (this.game.left) {
             this.x -= this.WALK_SPEED * TICK
-            this.facing = 1; //left
-        }
+            this.facing = 1; // left
+        } 
 
-
-        /*
-
-        PLACE LOGIC FOR FIRING BULLET HERE
-
-        */
-        // for (let i = 0; i < this.game.entities.length; i++) {
-        //     let ent = this.game.entities[i];
-        //     // if ((ent instanceof Soldier || ent instanceof Sniper) && canSee(this, ent) && this.elapsedTime > this.fireRate) {
-        //     //     this.elapsedTime = 0;
-        //     //     this.game.addEntity(new Bullet(this.game, 120, 432, true));
-        //     // }
-
-        //     if (ent instanceof Soldier && canSee(this, ent) && this.elapsedTime > this.fireRate && this.game.B) {
-        //         this.elapsedTime = 0;
-        //         this.game.addEntity(new Bullet(this.game, 120, 432, false, true));
-        //     }
-        // } 
-
+        // Bullet logic
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
-                if (this.facing === 0) { // facing right        
+                if (this.state == 6) { // upright
+                    this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 45));
+                } else if (this.state === 1 && this.facing === 0) { // facing right        
                     this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0));
-                } else if (this.facing === 1) { // facing left
+                } else if (this.state === 1 && this.facing === 1) { // facing left
                     this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180));
                 }
                 this.bulletCount++; // We give bullet `this` as source, so it can reduce bullet count when it removes itself                
@@ -191,21 +174,20 @@ class Lance {
             }
         }
 
-
+        // Fall unless on ground or jumping
+        if (!this.isJumping || this.isJumping && this.isDropping) {
+            this.y += this.FALL_SPEED * TICK;
+        }
 
         // Check Collisions
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
-                if (this.isFalling && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
-                    if (!this.isDropping) {
-                        this.isOnGround = true;
-                        this.isFalling = false;
-                        this.isJumping = false;
-                        this.y = entity.BB.y - this.BB.height;
-                        this.velocity.y = 0; 
-                    }
-                    this.isDropping = false;
+                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
+                    this.isOnGround = true;
+                    this.isJumping = false;
+                    this.isSpawning = false;
+                    this.y = entity.BB.y - this.BB.height;
                     this.updateBoundingBox();
                     // Magic numbers to align more with feet
                     this.ledgeR = entity.BB.right - 10;
@@ -226,35 +208,21 @@ class Lance {
 
         if (this.isOnGround && (this.x > this.ledgeR || this.x < this.ledgeL)) { // walked off ledge
             this.isOnGround = false;
-            this.isFalling = true;
         }
         
         if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) { // hit bottom of screen
             this.isOnGround = true;
-            this.isFalling = false;
             this.isJumping = false;
+            this.isDropping = false;
+            this.y = PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8
         }
-      
-        // update state
-        if (this.state !== 2) {
-            if (this.isJumping) {this.state = 2;} // This is stupid
-            else if (this.game.right && this.game.up) this.state = 6;
-            else if (this.game.right && this.game.down) this.state = 7;
-            else if (this.game.left && this.game.up) this.state = 4;
-            else if (this.game.left && this.game.down) this.state = 5;
-            else if (this.game.left) this.state = 1;
-            else if (this.game.right) this.state = 1;
-            else if (this.game.down) this.state = 8;
-            else if (this.game.up) this.state = 9
-            else if (this.dead) this.state = 10;
-            else this.state = 0;
-        }
-    
     };
 
 
     draw(ctx) {
-        if (this.state == 0) { // if idle
+        if (this.isJumping || this.isSpawning) { // Jumping takes precidence
+            this.animations[2][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        } else if (this.state == 0) { // if idle
             if (this.facing == 1) { // if facing left
                 ctx.drawImage(this.spritesheet2, 105, 495, 30, 34, this.x - this.game.camera.x - this.width/2 + 16, this.y, 1.85 *PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             } else { // facing right
@@ -278,7 +246,7 @@ class Lance {
             ctx.fillText("state: " + this.state, this.x - this.game.camera.x, this.y - 30);
             ctx.fillText("facing: " + this.facing, this.x - this.game.camera.x, this.y - 40);
             ctx.fillText("isOnGround: " + this.isOnGround, this.x - this.game.camera.x, this.y - 50);
-            ctx.fillText("isFalling: " + this.isFalling, this.x - this.game.camera.x, this.y - 60);
+            ctx.fillText("isJumping: " + this.isJumping, this.x - this.game.camera.x, this.y - 70);
         }
     };
 }
