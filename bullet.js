@@ -2,6 +2,7 @@ class Bullet {
     constructor(game, x, y, source, target, angle, heatSeeking) {
         Object.assign(this, {game, x, y, source, target, angle, heatSeeking});
         this.radius = 12;
+        console.log("log spawned at " + this.x)
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet_1.png");
 
@@ -25,9 +26,15 @@ class Bullet {
 
     angleToVelocity(angle, speed) {
         var radians = angle * Math.PI / 180; 
-        var velocityX = Math.cos(radians) * speed;
+        var velocityX;
         var velocityY = Math.sin(radians) * speed;
     
+        if (angle % 90 !== 0) { // make diagnal directions faster in the x dimension 
+            velocityX = Math.cos(radians) * speed * 1.5;
+        } else {
+            velocityX = Math.cos(radians) * speed;
+        }
+        
         return { x: velocityX, y: -velocityY };
     }
 
@@ -41,11 +48,15 @@ class Bullet {
         this.y += this.velocity.y * this.game.clockTick;
 
         // Remove bullet if passed left/right canvas boarder
-        if (this.x - this.game.camera.x > PARAMS.CANVAS_WIDTH || this.x - this.game.camera.x < -this.radius) {
+        if (this.x - this.game.camera.x > PARAMS.CANVAS_WIDTH 
+            || this.x - this.game.camera.x < - this.radius
+            || this.y < this.radius || this.y > PARAMS.CANVAS_HEIGHT) {
             this.source.bulletCount--; // decrement source's bullet count
             this.removeFromWorld = true;
             console.log("die bullet")
-        } // TODO: TOP/Bottom border
+        } else {
+            console.log("bullet lived")
+        }
 
         // TODO: Collisions here?
     };

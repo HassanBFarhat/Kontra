@@ -124,6 +124,7 @@ class Lance {
                 this.isDropping = true;
             } else if (!this.isJumping) { // Jump
                 this.isJumping = true;
+                this.isOnGround = false;
                 this.JUMP_TICK = 1;
             }
         }
@@ -162,13 +163,41 @@ class Lance {
         // Bullet logic
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
-                if (this.state == 6) { // upright
-                    this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 45));
-                } else if (this.state === 1 && this.facing === 0) { // facing right        
-                    this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0));
-                } else if (this.state === 1 && this.facing === 1) { // facing left
-                    this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180));
+                switch (this.state) {
+                    case 0: 
+                    case 1: // walking
+                        if (this.facing === 0) { // right
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0));
+                        } else { // left
+                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180));
+                        }
+                        break;
+                    case 6: // up right
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y, this, false, 45));
+                        break;
+                    case 7: // down right
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + this.width/2 + 4 * PARAMS.SCALE, this, false, 315));
+                        break;
+                    case 4: // up left
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y, this, false, 135));
+                        break;
+                    case 5: // down left
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + this.height/2 + 6 * PARAMS.SCALE, this, false, 225));
+                        break;
+                    case 8: // crouching
+                        if (this.facing === 0) { // right
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 0));
+                        } else {
+                            this.game.addEntity(new Bullet(this.game, this.x, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 180));
+                        }
+                        break;
+                    case 9: // up
+                        this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 90));
+                        break;
+                    default:
+                        console.log("Lance firing hit default state, this shouldn't happen")
                 }
+    
                 this.bulletCount++; // We give bullet `this` as source, so it can reduce bullet count when it removes itself                
                 this.lastBulletTime = this.elapsedTime;
             }
@@ -220,7 +249,7 @@ class Lance {
 
 
     draw(ctx) {
-        if (this.isJumping || this.isSpawning) { // Jumping takes precidence
+        if (this.isJumping || this.isSpawning || (!this.isOnGround && !this.isDropping)) { // Jumping takes precidence
             this.animations[2][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.state == 0) { // if idle
             if (this.facing == 1) { // if facing left
