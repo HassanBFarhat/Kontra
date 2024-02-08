@@ -2,7 +2,6 @@ class Bullet {
     constructor(game, x, y, source, target, angle, heatSeeking) {
         Object.assign(this, {game, x, y, source, target, angle, heatSeeking});
         this.radius = 12;
-        console.log("log spawned at " + this.x)
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet_1.png");
 
@@ -47,15 +46,12 @@ class Bullet {
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
 
-        // Remove bullet if passed left/right canvas boarder
+        // Remove bullet if passed canvas boarder
         if (this.x - this.game.camera.x > PARAMS.CANVAS_WIDTH 
-            || this.x - this.game.camera.x < - this.radius
+            || this.x - this.game.camera.x < -this.radius
             || this.y < this.radius || this.y > PARAMS.CANVAS_HEIGHT) {
             this.source.bulletCount--; // decrement source's bullet count
             this.removeFromWorld = true;
-            console.log("die bullet")
-        } else {
-            console.log("bullet lived")
         }
 
         // TODO: Collisions here?
