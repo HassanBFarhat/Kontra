@@ -192,7 +192,7 @@ class Lance {
                         }
                         break;
                     case 9: // up
-                        this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 90));
+                        this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90));
                         break;
                     default:
                         console.log("Lance firing hit default state, this shouldn't happen")
