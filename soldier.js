@@ -8,6 +8,8 @@ class Soldier {
         this.visualRadius = 200;
         this.dead = false;
 
+        this.WALK_SPEED = 0.25;
+
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Soldier.png");
 
         this.targetID = 0;
@@ -15,7 +17,7 @@ class Soldier {
 
         let dist = distance(this, this.target);
         this.maxSpeed = 50; //px per sec
-        let velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
+        this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
 
         this.updateBoundingBox();
         this.lastBB = this.BB;
@@ -62,6 +64,12 @@ class Soldier {
             this.target = this.path[this.targetID];
         }
 
+
+        // movement
+        this.x -= this.WALK_SPEED * this.elapsedTime;
+
+
+
         //collision detection for when enemy reaches lance
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
@@ -79,10 +87,12 @@ class Soldier {
 
         if (this.state !== 0) {
             dist = distance(this, this.target); 
-            let velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
+            this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
             this.x += this.velocity.x * this.game.clockTick;
             this.y += this.velocity.y * this.game.clockTick;
         }
+
+        
     }
     
     draw(ctx) {
