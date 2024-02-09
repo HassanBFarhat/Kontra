@@ -4,14 +4,16 @@ class Lance {
 
         this.game.lance = this;
 
-        this.spritesheet2 = ASSET_MANAGER.getAsset("./sprites/Lance_2.png");
+        this.spritesheet2 = ASSET_MANAGER.getAsset("./sprites/Lance_3.png");
+
 
         //Lance's state variables
         this.facing = 0; // 0 = right, 1 = left
         /*
          * 0 = idle, 1 = walking, = 2 = jumping, 3 = falling, 4 = walk diagonal up left, 
          * 5 = walk diagonal down left, 6 = walk diagonal up right, 
-         * 7 = walk diagonal down right, 8 = crouching, 9 = looking up, 10 = dead
+         * 7 = walk diagonal down right, 8 = crouching, 9 = looking up, 10 = dead,
+         * 11 = walk/shooting
         */
         this.state = 2; // Start in jumping state
         this.dead = false;
@@ -49,7 +51,7 @@ class Lance {
 
         //all animations here
 
-        for (let i = 0; i < 11; i++) {   // 11 states
+        for (let i = 0; i < 12; i++) {   // 12 states
             this.animations.push([]);
             for (let j = 0; j < 2; j++) {   // 2 directions
                 this.animations[i].push([]);
@@ -95,6 +97,10 @@ class Lance {
         // dead right
         this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 25, 3, 0.1, 30, false, true);
 
+        // walk left and shooting
+        this.animations[11][1] = new Animator(this.spritesheet2, 38, 925, 28, 35, 3, 0.1, 36, true, true);
+        // walk right and shooting
+        this.animations[11][0] = new Animator(this.spritesheet2, 38, 1039, 28, 35, 3, 0.1, 36, false, true);
     };
 
     updateBoundingBox() {
@@ -140,10 +146,12 @@ class Lance {
         }
       
         // update state
-        if (this.game.right && this.game.up) this.state = 6;
+        if (this.game.right && this.game.up) this.state = 6; 
         else if (this.game.right && this.game.down) this.state = 7;
         else if (this.game.left && this.game.up) this.state = 4;
         else if (this.game.left && this.game.down) this.state = 5;
+        else if (this.game.left && this.game.B) this.state = 11;
+        else if (this.game.right && this.game.B) this.state = 11;
         else if (this.game.left) this.state = 1;
         else if (this.game.right) this.state = 1;
         else if (this.game.down) this.state = 8;
@@ -164,8 +172,8 @@ class Lance {
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
                 switch (this.state) {
-                    case 0: 
-                    case 1: // walking
+                    case 0:
+                    case 11: // walking
                         if (this.facing === 0) { // right
                             this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0));
                         } else { // left
@@ -195,6 +203,13 @@ class Lance {
                         break;
                     case 9: // up
                         this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90));
+                        break;
+                    case 11: // walking
+                        if (this.facing === 0) { // right
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0));
+                        } else { // left
+                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180));
+                        }
                         break;
                     default:
                         console.log("Lance firing hit default state, this shouldn't happen")
