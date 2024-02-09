@@ -7,6 +7,8 @@ class Soldier {
         this.radius = 20;
         this.visualRadius = 200;
         this.dead = false;
+        this.width = 30 * PARAMS.SCALE;
+        this.height = 34 * PARAMS.SCALE;
 
         this.WALK_SPEED = 0.25;
 
@@ -36,11 +38,8 @@ class Soldier {
     }
 
     updateBoundingBox() {
-        if (this.facing === 0) {
-            this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2 + 10, this.height);
-        } else {
-            this.BB = new BoundingBox(this.x - 5, this.y, this.width - this.width/2 + 10, this.height);
-        }
+        // this.BB = new BoundingBox(this.x, this.y, 19, 34);
+        this.BB = new BoundingBox(this.x, this.y + 30, this.width - this.width/2 + 16, this.height);
     };
 
     updateLastBoundingBox() {
@@ -55,7 +54,7 @@ class Soldier {
         this.elapsedTime += this.game.clockTick;
         let dist = distance(this, this.target);
 
-        if (this.target.removeFromWorld) this.state = 1;
+        if (this.removeFromWorld) this.state = 1;
 
         if (dist < 5) {
             if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
@@ -68,9 +67,8 @@ class Soldier {
         // movement
         this.x -= this.WALK_SPEED * this.elapsedTime;
 
-
-
         //collision detection for when enemy reaches lance
+        this.updateBoundingBox();
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
             if (ent instanceof Lance && canSee(this, ent)) {
@@ -84,6 +82,7 @@ class Soldier {
                 this.target = this.path[this.targetID];
             }
         }
+        this.updateLastBoundingBox();
 
         if (this.state !== 0) {
             dist = distance(this, this.target); 
