@@ -175,40 +175,40 @@ class Lance {
                     case 0:
                     case 11: // walking
                         if (this.facing === 0) { // right
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0, true, false));
                         } else { // left
-                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180));
+                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180, true, false));
                         }
                         break;
                     case 6: // up right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y, this, false, 45));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y, this, false, 45, true, false));
                         break;
                     case 7: // down right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + this.width/2 + 4 * PARAMS.SCALE, this, false, 315));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + this.width/2 + 4 * PARAMS.SCALE, this, false, 315, true, false));
                         break;
                     case 4: // up left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y, this, false, 135));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y, this, false, 135, true, false));
                         break;
                     case 5: // down left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + this.height/2 + 6 * PARAMS.SCALE, this, false, 225));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + this.height/2 + 6 * PARAMS.SCALE, this, false, 225, true, false));
                         break;
                     case 8: // crouching
                         if (!this.isOnGround) { // Mid jump
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 20, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 270));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 20, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 270, true, false));
                         } else if (this.facing === 0) { // right
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 0));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 0, true, false));
                         } else {
-                            this.game.addEntity(new Bullet(this.game, this.x, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 180));
+                            this.game.addEntity(new Bullet(this.game, this.x, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 180, true, false));
                         }
                         break;
                     case 9: // up
-                        this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90));
+                        this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
                         break;
                     case 11: // walking
                         if (this.facing === 0) { // right
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0, true, false));
                         } else { // left
-                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180));
+                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180, true, false));
                         }
                         break;
                     default:
