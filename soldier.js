@@ -11,6 +11,9 @@ class Soldier {
         this.height = 34 * PARAMS.SCALE;
 
         this.WALK_SPEED = 0.25;
+        this.DEAD_SPEED = 0.22;
+
+        this.initialX = this.x;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/Soldier.png");
 
@@ -29,7 +32,7 @@ class Soldier {
         // running
         this.animations[0].push(new Animator(this.spritesheet, 38, 39, 19, 34, 5, 0.1, 37, false, true));
         //dying
-        this.animations[0].push(new Animator(this.spritesheet, 316, 39, 19, 34, 4, 0.6, 44, false, true));
+        this.animations[0].push(new Animator(this.spritesheet, 307, 37, 33, 35, 4, 0.1, 33.5, false, false));
 
         this.state = 0; //0 = running, 1 = dead sprite
         this.facing = 1; // 0 = right, 1 = left
@@ -47,14 +50,24 @@ class Soldier {
     };
 
     die() {
+        this.state = 1;
         this.dead = true;
     };
+
+    removeFromCanvas() {
+        this.removeFromWorld = true;
+    }
 
     update() {
         this.elapsedTime += this.game.clockTick;
         let dist = distance(this, this.target);
-
-        if (this.removeFromWorld) this.state = 1;
+        
+        if (this.state === 1) {
+            let deltaX = this.x - this.initialX;
+            this.x += this.DEAD_SPEED * this.elapsedTime;
+            this.y -= Math.sqrt(Math.abs(deltaX)) / 40;
+            setTimeout(this.removeFromCanvas.bind(this), 550);
+        }
 
         if (dist < 5) {
             if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
@@ -65,7 +78,7 @@ class Soldier {
 
 
         // movement
-        this.x -= this.WALK_SPEED * this.elapsedTime;
+        if (this.state !== 1) this.x -= this.WALK_SPEED * this.elapsedTime;
 
         //collision detection for when enemy reaches lance
         this.updateBoundingBox();
@@ -84,22 +97,26 @@ class Soldier {
         }
         this.updateLastBoundingBox();
 
-        if (this.state !== 0) {
-            dist = distance(this, this.target); 
-            this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
-            this.x += this.velocity.x * this.game.clockTick;
-            this.y += this.velocity.y * this.game.clockTick;
-        }
+        // if (this.state !== 0) {
+        //     dist = distance(this, this.target); 
+        //     this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
+        //     this.x += this.velocity.x * this.game.clockTick;
+        //     this.y += this.velocity.y * this.game.clockTick;
+        // }
 
-        
+
     }
     
     draw(ctx) {
         // ctx.drawImage(this.spritesheet, 38, 39, 19, 34, 0, 0, 19, 34);
 
         // this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + PARAMS.SCALE, PARAMS.SCALE);
-
-        this.animations[0][0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 30, PARAMS.SCALE);
+        if (this.state === 0) {
+            this.animations[0][0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 30, PARAMS.SCALE);
+        } else {
+            this.animations[0][1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 30, PARAMS.SCALE);
+        }
+        
 
         if (PARAMS.DEBUG) {
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);

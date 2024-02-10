@@ -69,7 +69,7 @@ class Bullet {
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
             if (this.lanceTeam && ent instanceof Soldier && this.BB.collide(ent.BB)) {
-                ent.removeFromWorld = true;
+                ent.die();
                 this.removeFromWorld = true;
             }
         }
