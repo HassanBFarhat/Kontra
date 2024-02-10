@@ -7,11 +7,41 @@ class SceneManager {
         this.gameOver = false;
 
         this.lance = new Lance(this.game, this.x, 154);
+
         this.lance.velocity = { x: 0, y: 0 };
+
         this.lance.state = 0; //loads in idle state
+
+        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
 
         this.debugCheckbox = document.getElementById("debug");
     };
+
+    loadLevel(level) {
+
+        this.game.entities = [];
+        this.x = 0;
+
+        for (var i = 0; i < level.background.length; i++) {
+            let backgrounds = level.background[i];
+            this.game.addEntity(new Background(this.game, backgrounds.x, backgrounds.y));
+        }
+
+        for (var i = 0; i < level.ground.length; i++) {
+            let grounds = level.ground[i];
+            this.game.addEntity(new Ground(this.game, grounds.x, grounds.y, grounds.w, grounds.h));
+        }
+
+        for (var i = 0; i < level.lance.length; i++) {
+            let lances = level.lance[i];
+            this.game.addEntity(new Lance(this.game, lances.x, lances.y));
+        }
+
+        for (var i = 0; i < level.soldier.length; i++) {
+            let soldiers = level.soldier[i];
+            this.game.addEntity(new Soldier(this.game, soldiers.x, soldiers.y, [{x: 1600, y: 349}, {x: 1200, y: 349}, {x: 800, y: 349}, {x: 400, y: 349}, {x: -20, y: 349}]));
+        }
+    }
 
     clearEntities() {
         this.game.entities.forEach((entity) => {
@@ -22,7 +52,7 @@ class SceneManager {
     update() {
         const midpoint = PARAMS.CANVAS_WIDTH / 2 - this.lance.width / 2;
 
-        if (this.x < this.game.entities[1].x - midpoint) this.x = this.game.entities[1].x - midpoint;
+        if (this.x < this.game.lance.x - midpoint) this.x = this.game.lance.x - midpoint;
 
         // Check if debug checkbox is checked
         PARAMS.DEBUG = this.debugCheckbox.checked;
@@ -71,5 +101,5 @@ class SceneManager {
             ctx.fillStyle = ctx.strokeStyle;
         }
     };
-    
+
 }
