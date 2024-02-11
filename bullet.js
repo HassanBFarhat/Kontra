@@ -71,6 +71,7 @@ class Bullet {
             if (this.lanceTeam && ent instanceof Soldier && this.BB.collide(ent.BB)) {
                 ent.die();
                 this.removeFromWorld = true;
+                this.source.bulletCount--;
             }
         }
         this.updateLastBoundingBox();
