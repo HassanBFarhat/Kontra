@@ -64,8 +64,9 @@ class Soldier {
         
         if (this.state === 1) {
             let deltaX = this.x - this.initialX;
-            this.x += this.DEAD_SPEED * this.elapsedTime;
-            this.y -= Math.sqrt(Math.abs(deltaX)) / 40;
+            this.y -= Math.sqrt(Math.abs(deltaX)) / 20;
+            if (this.y < 320) this.x += this.DEAD_SPEED * this.elapsedTime;
+            // this.x += this.DEAD_SPEED * this.elapsedTime;
             setTimeout(this.removeFromCanvas.bind(this), 550);
         }
 
