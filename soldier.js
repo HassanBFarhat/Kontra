@@ -41,7 +41,6 @@ class Soldier {
     }
 
     updateBoundingBox() {
-        // this.BB = new BoundingBox(this.x, this.y, 19, 34);
         this.BB = new BoundingBox(this.x, this.y + 30, this.width - this.width/2 + 16, this.height);
     };
 
@@ -60,16 +59,18 @@ class Soldier {
 
     update() {
         this.elapsedTime += this.game.clockTick;
-        let dist = distance(this, this.target);
-        
-        if (this.state === 1) {
+
+        if (this.state === 1) { // Dead
             let deltaX = this.x - this.initialX;
             this.y -= Math.sqrt(Math.abs(deltaX)) / 20;
             if (this.y < 320) this.x += this.DEAD_SPEED * this.elapsedTime;
+            this.BB = new BoundingBox(-PARAMS.CANVAS_WIDTH, -PARAMS.CANVAS_HEIGHT, 0, 0); // Invalidate bounding box
             // this.x += this.DEAD_SPEED * this.elapsedTime;
             setTimeout(this.removeFromCanvas.bind(this), 550);
+            return;
         }
 
+        let dist = distance(this, this.target);
         if (dist < 5) {
             if (this.targetID < this.path.length - 1 && this.target === this.path[this.targetID]) {
                 this.targetID++;
@@ -77,9 +78,8 @@ class Soldier {
             this.target = this.path[this.targetID];
         }
 
-
         // movement
-        if (this.state !== 1) this.x -= this.WALK_SPEED * this.elapsedTime;
+        this.x -= this.WALK_SPEED * this.elapsedTime;
 
         //collision detection for when enemy reaches lance
         this.updateBoundingBox();
@@ -104,8 +104,6 @@ class Soldier {
         //     this.x += this.velocity.x * this.game.clockTick;
         //     this.y += this.velocity.y * this.game.clockTick;
         // }
-
-
     }
     
     draw(ctx) {
