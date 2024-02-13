@@ -107,16 +107,43 @@ class Lance {
     };
 
     updateBoundingBox() {
-        if (this.facing === 0) { // right
-            this.BB = new BoundingBox(this.x + 30, this.y, this.width - this.width/2 - 5, this.height);
-        } else { // left
-            this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2, this.height);
-        }
-
         if (!this.isDropping && (!this.isOnGround || this.isJumping)) {
             this.BB = new BoundingBox(this.x, this.y, this.width-42, this.height - 12*PARAMS.SCALE);
+            return;
         } else if (this.state === 8 && this.isOnGround) { // crouching on ground
             this.BB = new BoundingBox(this.x, this.y, this.width + 4*PARAMS.SCALE, this.height - 16*PARAMS.SCALE);
+            return;
+        }
+
+        switch (this.state) { // One of the switch statements of all time
+            case 1: // Moving
+                this.BB = new BoundingBox(this.x + 5, this.y, this.width - this.width/2 + 4, this.height);
+                break;
+            case 6: // Up-right
+            case 4: // Up-left
+                this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2 + 4, this.height);
+                break;
+            case 7: // down-right
+            case 5: // down-left
+                this.BB = new BoundingBox(this.x + 15, this.y +5, this.width - this.width/2 + 4, this.height +5);
+                break;
+            case 9: // UP
+                this.BB = new BoundingBox(this.x + 10, this.y, this.width - this.width/2 - 5, this.height);
+                break;
+            default:
+                if (this.facing === 0) { // Right
+                    if (this.state == 0) // idle right
+                        this.BB = new BoundingBox(this.x + 30, this.y, this.width - this.width/2 - 5, this.height);
+                    if (this.state === 11) // Moving and shooting right
+                        this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2, this.height);
+                } else if (this.facing === 1) {  // Left
+                    if  (this.state == 0) // idle left
+                        this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2, this.height);
+                    if (this.state === 11) // Moving and shooting left
+                        this.BB = new BoundingBox(this.x + 36, this.y, this.width - this.width/2, this.height);
+                } else {
+                    this.BB = new BoundingBox(this.x + 30, this.y, this.width - this.width/2 - 5, this.height);
+                }
         }
     };
 
