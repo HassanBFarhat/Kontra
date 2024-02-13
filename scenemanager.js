@@ -4,35 +4,22 @@ class SceneManager {
         this.game.camera = this;
         this.x = 0; // Scene Camera Position
 
+        //game over and title shizz
         this.gameOver = false;
 
+        this.title = true;
+        this.level = null;
+
+
         this.lance = new Lance(this.game, this.x, 154);
-
         this.lance.velocity = { x: 0, y: 0 };
-
         this.lance.state = 0; //loads in idle state
 
         this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true); // I dont think the rest of the arguments are necessary, JS will ignore them
 
+
         this.debugCheckbox = document.getElementById("debug");
     };
-
-    loadLevel(level, transition) {
-        this.game.entities = [];
-        this.x = 0;
-
-        level.background.forEach(background => this.game.addEntity(new Background(this.game, background.x, background.y)));
-        
-        level.ground.forEach(ground => this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.w, ground.h)));
-        
-        level.lance.forEach(lance => this.game.addEntity(new Lance(this.game, lance.x, lance.y)));
-
-        level.soldier.forEach(soldier => { // TODO: Remove hardcoded path?
-            this.game.addEntity(new Soldier(this.game, soldier.x, soldier.y, [{x: 1600, y: 349}, {x: 1200, y: 349}, {x: 800, y: 349}, {x: 400, y: 349}, {x: -20, y: 349}]));
-        });
-
-        level.sniper.forEach(sniper => this.game.addEntity(new Sniper(this.game, sniper.x, sniper.y)));
-    }
 
     clearEntities() {
         this.game.entities.forEach((entity) => {
@@ -40,16 +27,86 @@ class SceneManager {
         });
     };
 
+    loadLevel(level, x, y, transition, title) {
+        this.title = title;
+        this.level = level;
+        this.clearEntities();
+        this.game.entities = [];
+        this.x = 0;
+
+        if (transition) {
+            this.game.addEntity(new TransitionScreen(this.game, level, x, y, title));
+        }
+        else {
+            if (level.background) { level.background.forEach(background => this.game.addEntity(new Background(this.game, background.x, background.y)));}
+
+            if (level.ground) {level.ground.forEach(ground => this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.w, ground.h)));}
+
+            if (level.lance) {level.lance.forEach(lance => this.game.addEntity(new Lance(this.game, lance.x, lance.y)));}
+
+            if (level.soldier) {
+                level.soldier.forEach(soldier => { // TODO: Remove hardcoded path?
+                    this.game.addEntity(new Soldier(this.game, soldier.x, soldier.y, [{x: 1600, y: 349}, {
+                        x: 1200,
+                        y: 349
+                    }, {x: 800, y: 349}, {x: 400, y: 349}, {x: -20, y: 349}]));
+                });
+            }
+
+            if (level.sniper) {level.sniper.forEach(sniper => this.game.addEntity(new Sniper(this.game, sniper.x, sniper.y)));}
+        }
+
+        if (level.music && !this.title) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset(level.music);
+        }
+    }
+
+    updateAudio() {
+        const mute = document.getElementById("mute").checked;
+        const volume = document.getElementById("volume").value;
+
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+
+    };
+
     update() {
-        const midpoint = PARAMS.CANVAS_WIDTH / 2 - this.lance.width / 2;
+        if (this.title && this.game.click){
+            if (this.game.click && this.game.click.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH) {
+                this.title = false;
+                this.lance = new Lance(this.game, this.x, 154);
+             this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); // I dont think the rest of the arguments are necessary, JS will ignore them
+            }
+        }
+
+        // if (this.gameOver) {
+        //     this.gameOver = false;
+        //     this.lance = new Lance(this.game, x , y);
+        //     this.clearEntities();
+        //
+        //     this.game.addEntity(new TransitionScreen(this.game, levelOne, x, y, true));
+        // }
+
+        this.updateAudio();
+
+        let midpoint = PARAMS.CANVAS_WIDTH / 2 - this.lance.width / 2;
 
         if (this.x < this.game.lance.x - midpoint) this.x = this.game.lance.x - midpoint;
 
         // Check if debug checkbox is checked
         PARAMS.DEBUG = this.debugCheckbox.checked;
+
     };
  
     draw(ctx) {
+
+        if (this.title) { // Title Screen
+            ctx.drawImage(ASSET_MANAGER.getAsset("backgrounds/kontra-title.png"), 0 *PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
+            ctx.fillStyle = this.game.mouse && this.game.mouse.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH ? "Red" : "White";
+            ctx.fillText("Start", 5.8 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH);
+        }
+
         if (PARAMS.DEBUG) {
             ctx.translate(0, -10); // hack to move elements up by 10 pixels instead of adding -10 to all y coordinates below
             ctx.strokeStyle = "White";
