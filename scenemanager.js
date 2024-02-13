@@ -12,12 +12,12 @@ class SceneManager {
 
         this.lance.state = 0; //loads in idle state
 
-        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
+        this.loadLevel(levelFour, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
 
         this.debugCheckbox = document.getElementById("debug");
     };
 
-    loadLevel(level) {
+    loadLevel(level, transition) {
 
         this.game.entities = [];
         this.x = 0;
