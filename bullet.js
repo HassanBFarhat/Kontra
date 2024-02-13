@@ -26,9 +26,9 @@ class Bullet {
     };
 
     angleToVelocity(angle, speed) {
-        var radians = angle * Math.PI / 180; 
-        var velocityX;
-        var velocityY = Math.sin(radians) * speed;
+        const radians = angle * Math.PI / 180; 
+        let velocityX;
+        const velocityY = Math.sin(radians) * speed;
     
         if (angle % 90 !== 0) { // make diagnal directions faster in the x dimension 
             velocityX = Math.cos(radians) * speed * 1.5;
@@ -64,30 +64,19 @@ class Bullet {
             this.removeFromWorld = true;
         }
 
-        // TODO: Collisions here?
+        // Collisions
         this.updateBoundingBox();
-        for (let i = 0; i < this.game.entities.length; i++) {
-            let ent = this.game.entities[i];
+        this.game.entities.forEach((ent) => {
             if (this.lanceTeam && ent instanceof Soldier && this.BB.collide(ent.BB)) {
                 ent.die();
                 this.removeFromWorld = true;
                 this.source.bulletCount--;
             }
-        }
+        });
         this.updateLastBoundingBox();
     };
 
     draw(ctx) {
         this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 8, PARAMS.SCALE);
-
-        // if (PARAMS.DEBUG) {
-        //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-        //     // draw text of coordinates
-        //     ctx.font = "10px Arial";
-        //     ctx.fillStyle = "white";
-        //     ctx.fillText("x: " + this.x, this.x - this.game.camera.x, this.y - 10);
-        //     ctx.fillText("y: " + this.y, this.x - this.game.camera.x, this.y - 20);
-
-        // }
     };
 }

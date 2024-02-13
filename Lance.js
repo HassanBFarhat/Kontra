@@ -207,13 +207,6 @@ class Lance {
                     case 9: // up
                         this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
                         break;
-                    case 11: // walking
-                        if (this.facing === 0) { // right
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0, true, false));
-                        } else { // left
-                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180, true, false));
-                        }
-                        break;
                     default:
                         console.log("Lance firing hit default state, this shouldn't happen")
                 }

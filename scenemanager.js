@@ -18,34 +18,20 @@ class SceneManager {
     };
 
     loadLevel(level, transition) {
-
         this.game.entities = [];
         this.x = 0;
 
-        for (var i = 0; i < level.background.length; i++) {
-            let backgrounds = level.background[i];
-            this.game.addEntity(new Background(this.game, backgrounds.x, backgrounds.y));
-        }
+        level.background.forEach(background => this.game.addEntity(new Background(this.game, background.x, background.y)));
+        
+        level.ground.forEach(ground => this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.w, ground.h)));
+        
+        level.lance.forEach(lance => this.game.addEntity(new Lance(this.game, lance.x, lance.y)));
 
-        for (var i = 0; i < level.ground.length; i++) {
-            let grounds = level.ground[i];
-            this.game.addEntity(new Ground(this.game, grounds.x, grounds.y, grounds.w, grounds.h));
-        }
+        level.soldier.forEach(soldier => { // TODO: Remove hardcoded path?
+            this.game.addEntity(new Soldier(this.game, soldier.x, soldier.y, [{x: 1600, y: 349}, {x: 1200, y: 349}, {x: 800, y: 349}, {x: 400, y: 349}, {x: -20, y: 349}]));
+        });
 
-        for (var i = 0; i < level.lance.length; i++) {
-            let lances = level.lance[i];
-            this.game.addEntity(new Lance(this.game, lances.x, lances.y));
-        }
-
-        for (var i = 0; i < level.soldier.length; i++) {
-            let soldiers = level.soldier[i];
-            this.game.addEntity(new Soldier(this.game, soldiers.x, soldiers.y, [{x: 1600, y: 349}, {x: 1200, y: 349}, {x: 800, y: 349}, {x: 400, y: 349}, {x: -20, y: 349}]));
-        }
-
-        for (var i = 0; i < level.sniper.length; i++) {
-            let snipers = level.sniper[i];
-            this.game.addEntity(new Sniper(this.game, snipers.x, snipers.y));
-        }
+        level.sniper.forEach(sniper => this.game.addEntity(new Sniper(this.game, sniper.x, sniper.y)));
     }
 
     clearEntities() {
@@ -69,8 +55,10 @@ class SceneManager {
             ctx.strokeStyle = "White";
             ctx.lineWidth = 2;
 
-
+            // FPS Counter
             ctx.fillText(`FPS: ${this.game.timer.ticks.length}`, 5, 25)
+
+            // Input Display
             ctx.strokeStyle = this.game.left ? "White" : "Grey";
             ctx.fillStyle = ctx.strokeStyle;
             ctx.strokeRect(6 * PARAMS.BLOCKWIDTH - 2, 2.5 * PARAMS.BLOCKWIDTH - 2, 0.5 * PARAMS.BLOCKWIDTH + 2, 0.5 * PARAMS.BLOCKWIDTH + 2);
@@ -106,5 +94,4 @@ class SceneManager {
             ctx.fillStyle = ctx.strokeStyle;
         }
     };
-
 }
