@@ -107,10 +107,43 @@ class Lance {
     };
 
     updateBoundingBox() {
-        if (this.facing === 0) {
-            this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2 + 10, this.height);
-        } else {
-            this.BB = new BoundingBox(this.x - 5, this.y, this.width - this.width/2 + 10, this.height);
+        if (!this.isDropping && (!this.isOnGround || this.isJumping)) {
+            this.BB = new BoundingBox(this.x, this.y, this.width-42, this.height - 12*PARAMS.SCALE);
+            return;
+        } else if (this.state === 8 && this.isOnGround) { // crouching on ground
+            this.BB = new BoundingBox(this.x, this.y, this.width + 4*PARAMS.SCALE, this.height - 16*PARAMS.SCALE);
+            return;
+        }
+
+        switch (this.state) { // One of the switch statements of all time
+            case 1: // Moving
+                this.BB = new BoundingBox(this.x + 5, this.y, this.width - this.width/2 + 4, this.height);
+                break;
+            case 6: // Up-right
+            case 4: // Up-left
+                this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2 + 4, this.height);
+                break;
+            case 7: // down-right
+            case 5: // down-left
+                this.BB = new BoundingBox(this.x + 15, this.y +5, this.width - this.width/2 + 4, this.height +5);
+                break;
+            case 9: // UP
+                this.BB = new BoundingBox(this.x + 10, this.y, this.width - this.width/2 - 5, this.height);
+                break;
+            default:
+                if (this.facing === 0) { // Right
+                    if (this.state == 0) // idle right
+                        this.BB = new BoundingBox(this.x + 30, this.y, this.width - this.width/2 - 5, this.height);
+                    if (this.state === 11) // Moving and shooting right
+                        this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2, this.height);
+                } else if (this.facing === 1) {  // Left
+                    if  (this.state == 0) // idle left
+                        this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2, this.height);
+                    if (this.state === 11) // Moving and shooting left
+                        this.BB = new BoundingBox(this.x + 36, this.y, this.width - this.width/2, this.height);
+                } else {
+                    this.BB = new BoundingBox(this.x + 30, this.y, this.width - this.width/2 - 5, this.height);
+                }
         }
     };
 
@@ -171,6 +204,11 @@ class Lance {
             this.facing = 1; // left
         } 
 
+        // Crouch on ground
+        if (this.isOnGround && this.game.down) {
+            this.y += 64;
+        }
+
         // Bullet logic
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
@@ -184,28 +222,32 @@ class Lance {
                         }
                         break;
                     case 6: // up right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y, this, false, 45, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 2*PARAMS.SCALE, this, false, 45, true, false));
                         break;
                     case 7: // down right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + this.width/2 + 4 * PARAMS.SCALE, this, false, 315, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 3*PARAMS.SCALE, this, false, 315, true, false));
                         break;
                     case 4: // up left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y, this, false, 135, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 4*PARAMS.SCALE, this, false, 135, true, false));
                         break;
                     case 5: // down left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + this.height/2 + 6 * PARAMS.SCALE, this, false, 225, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 3* PARAMS.SCALE, this, false, 225, true, false));
                         break;
                     case 8: // crouching
                         if (!this.isOnGround) { // Mid jump
                             this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 20, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 270, true, false));
                         } else if (this.facing === 0) { // right
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 0, true, false));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y - 6*PARAMS.SCALE, this, false, 0, true, false));
                         } else {
-                            this.game.addEntity(new Bullet(this.game, this.x, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 180, true, false));
+                            this.game.addEntity(new Bullet(this.game, this.x, this.y - 6*PARAMS.SCALE, this, false, 180, true, false));
                         }
                         break;
                     case 9: // up
-                        this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
+                        if (this.facing === 1) {
+                            this.game.addEntity(new Bullet(this.game, this.x + 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
+                        } else {
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
+                        }
                         break;
                     default:
                         console.log("Lance firing hit default state, this shouldn't happen")
@@ -225,12 +267,13 @@ class Lance {
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
-                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
+                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top + 10) { // Collided with ground
                     this.isOnGround = true;
                     this.isJumping = false;
                     this.isSpawning = false;
+                    this.updateBoundingBox(); // Update bounding box now that we've landed and changed BB state
                     this.y = entity.BB.y - this.BB.height;
-                    this.updateBoundingBox();
+                    this.updateBoundingBox(); // Update bounding box now that we've moved lance up to the top of hte ground
                     // Magic numbers to align more with feet
                     this.ledgeR = entity.BB.right - 10;
                     this.ledgeL = entity.BB.left - this.width + 50;
@@ -257,6 +300,10 @@ class Lance {
             this.isJumping = false;
             this.isDropping = false;
             this.y = PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8
+            if (this.state === 8) { // crouching
+                this.y += 64;
+            }
+            this.updateBoundingBox();
         }
     };
 
@@ -271,7 +318,7 @@ class Lance {
                 ctx.drawImage(this.spritesheet2, 105, 610, 30, 34, this.x - this.game.camera.x, this.y, 1.85 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH + 8);
             }
         } else if (this.state === 8) { // crouching  
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 16*PARAMS.SCALE, PARAMS.SCALE);
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.state === 9) { //looking directly up
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 11 *PARAMS.SCALE, PARAMS.SCALE);
         } else {
@@ -279,6 +326,7 @@ class Lance {
         }
 
         if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
             ctx.font = "10px Arial";
             ctx.fillStyle = "white";
