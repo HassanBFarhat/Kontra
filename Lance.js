@@ -287,7 +287,6 @@ class Lance {
 
         if (PARAMS.DEBUG) {
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-            // draw text of coordinates
             ctx.font = "10px Arial";
             ctx.fillStyle = "white";
             ctx.fillText("x: " + this.x, this.x - this.game.camera.x, this.y - 10);
@@ -295,7 +294,7 @@ class Lance {
             ctx.fillText("state: " + this.state, this.x - this.game.camera.x, this.y - 30);
             ctx.fillText("facing: " + this.facing, this.x - this.game.camera.x, this.y - 40);
             ctx.fillText("isOnGround: " + this.isOnGround, this.x - this.game.camera.x, this.y - 50);
-            ctx.fillText("isJumping: " + this.isJumping, this.x - this.game.camera.x, this.y - 70);
+            ctx.fillText("isJumping: " + this.isJumping, this.x - this.game.camera.x, this.y - 60);
         }
     };
 }

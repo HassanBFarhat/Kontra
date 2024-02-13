@@ -17,7 +17,7 @@ class SceneManager {
         this.debugCheckbox = document.getElementById("debug");
     };
 
-    loadLevel(level) {
+    loadLevel(level, transition) {
 
         this.game.entities = [];
         this.x = 0;
