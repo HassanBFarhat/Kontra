@@ -4,6 +4,9 @@ class Lance {
 
         this.game.lance = this;
 
+        this.radius = 20;
+        this.visualRadius = 200;
+
         this.spritesheet2 = ASSET_MANAGER.getAsset("./sprites/Lance_3.png");
 
 

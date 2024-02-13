@@ -12,7 +12,7 @@ class SceneManager {
 
         this.lance.state = 0; //loads in idle state
 
-        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
+        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true); // I dont think the rest of the arguments are necessary, JS will ignore them
 
         this.debugCheckbox = document.getElementById("debug");
     };
@@ -40,6 +40,11 @@ class SceneManager {
         for (var i = 0; i < level.soldier.length; i++) {
             let soldiers = level.soldier[i];
             this.game.addEntity(new Soldier(this.game, soldiers.x, soldiers.y, [{x: 1600, y: 349}, {x: 1200, y: 349}, {x: 800, y: 349}, {x: 400, y: 349}, {x: -20, y: 349}]));
+        }
+
+        for (var i = 0; i < level.sniper.length; i++) {
+            let snipers = level.sniper[i];
+            this.game.addEntity(new Sniper(this.game, snipers.x, snipers.y));
         }
     }
 
