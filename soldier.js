@@ -10,7 +10,11 @@ class Soldier {
         this.width = 30 * PARAMS.SCALE;
         this.height = 34 * PARAMS.SCALE;
 
+        this.isOnGround = false;
+        this.ledge = 0;
+
         this.WALK_SPEED = 0.25;
+        this.FALL_SPEED = 200; // TODO: Convert to elapsed time
         this.DEAD_SPEED = 0.22;
 
         this.initialX = this.x;
@@ -41,7 +45,7 @@ class Soldier {
     }
 
     updateBoundingBox() {
-        this.BB = new BoundingBox(this.x, this.y + 30, this.width - this.width/2 + 16, this.height);
+        this.BB = new BoundingBox(this.x, this.y, this.width - this.width/2 + 16, this.height);
     };
 
     updateLastBoundingBox() {
@@ -80,11 +84,14 @@ class Soldier {
 
         // movement
         this.x -= this.WALK_SPEED * this.elapsedTime;
+        if (!this.isOnGround) { // fall if not on ground
+            this.y += this.FALL_SPEED  * this.game.clockTick; // TODO: Convert to elapsed time?
+        }
+        
 
         //collision detection for when enemy reaches lance
         this.updateBoundingBox();
-        for (let i = 0; i < this.game.entities.length; i++) {
-            let ent = this.game.entities[i];
+        this.game.entities.forEach(ent => {
             if (ent instanceof Lance && canSee(this, ent)) {
                 this.target = ent;
             }
@@ -95,9 +102,26 @@ class Soldier {
                 }
                 this.target = this.path[this.targetID];
             }
-        }
+            // Physical Collisons
+            if (ent.BB && this.BB.collide(ent.BB)) {
+                if (ent instanceof Ground && this.lastBB.bottom <= ent.BB.top) { // Ground
+                    this.y = ent.BB.y - this.BB.height;
+                    this.isOnGround = true;
+                    this.ledge = ent.BB.left;
+                    this.updateBoundingBox();
+                }
+                // TODO: Collide with lance and cause damage to lance
+            }
+        });
         this.updateLastBoundingBox();
 
+        // Walked off ledge
+        if (this.x < this.ledge - this.BB.width) this.isOnGround = false;
+
+        // Die if falls off screen
+        if (this.y > PARAMS.CANVAS_HEIGHT) this.die();
+
+        // TODO: Do we need this for anything?
         // if (this.state !== 0) {
         //     dist = distance(this, this.target); 
         //     this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
@@ -107,19 +131,14 @@ class Soldier {
     }
     
     draw(ctx) {
-        // ctx.drawImage(this.spritesheet, 38, 39, 19, 34, 0, 0, 19, 34);
-
-        // this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + PARAMS.SCALE, PARAMS.SCALE);
         if (this.state === 0) {
-            this.animations[0][0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 30, PARAMS.SCALE);
+            this.animations[0][0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else {
-            this.animations[0][1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 30, PARAMS.SCALE);
+            this.animations[0][1].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
-        
 
         if (PARAMS.DEBUG) {
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-            // draw text of coordinates
             ctx.font = "10px Arial";
             ctx.fillStyle = "white";
             ctx.fillText("x: " + this.x, this.x - this.game.camera.x, this.y - 10);
