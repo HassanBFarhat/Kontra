@@ -222,16 +222,16 @@ class Lance {
                         }
                         break;
                     case 6: // up right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y, this, false, 45, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 2*PARAMS.SCALE, this, false, 45, true, false));
                         break;
                     case 7: // down right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + this.width/2 + 4 * PARAMS.SCALE, this, false, 315, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 3*PARAMS.SCALE, this, false, 315, true, false));
                         break;
                     case 4: // up left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y, this, false, 135, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 4*PARAMS.SCALE, this, false, 135, true, false));
                         break;
                     case 5: // down left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + this.height/2 + 6 * PARAMS.SCALE, this, false, 225, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 3* PARAMS.SCALE, this, false, 225, true, false));
                         break;
                     case 8: // crouching
                         if (!this.isOnGround) { // Mid jump
@@ -243,7 +243,11 @@ class Lance {
                         }
                         break;
                     case 9: // up
-                        this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
+                        if (this.facing === 1) {
+                            this.game.addEntity(new Bullet(this.game, this.x + 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
+                        } else {
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 4 * PARAMS.SCALE, this.y - 8 * PARAMS.SCALE, this, false, 90, true, false));
+                        }
                         break;
                     default:
                         console.log("Lance firing hit default state, this shouldn't happen")
