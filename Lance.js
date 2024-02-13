@@ -236,7 +236,7 @@ class Lance {
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
-                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
+                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top + 10) { // Collided with ground
                     this.isOnGround = true;
                     this.isJumping = false;
                     this.isSpawning = false;
