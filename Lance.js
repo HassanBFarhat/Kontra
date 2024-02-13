@@ -107,14 +107,6 @@ class Lance {
     };
 
     updateBoundingBox() {
-        if (!this.isDropping && (!this.isOnGround || this.isJumping)) {
-            this.BB = new BoundingBox(this.x, this.y, this.width-42, this.height - 12*PARAMS.SCALE);
-            return;
-        } else if (this.state === 8 && this.isOnGround) { // crouching on ground
-            this.BB = new BoundingBox(this.x, this.y, this.width + 4*PARAMS.SCALE, this.height - 16*PARAMS.SCALE);
-            return;
-        }
-
         switch (this.state) { // One of the switch statements of all time
             case 1: // Moving
                 this.BB = new BoundingBox(this.x + 5, this.y, this.width - this.width/2 + 4, this.height);
@@ -144,6 +136,14 @@ class Lance {
                 } else {
                     this.BB = new BoundingBox(this.x + 30, this.y, this.width - this.width/2 - 5, this.height);
                 }
+        }
+
+        if (!this.isDropping && (!this.isOnGround || this.isJumping)) {
+            this.BB = new BoundingBox(this.x, this.y, this.width-42, this.height - 12*PARAMS.SCALE);
+        } else if (this.state === 8 && this.isOnGround) { // crouching on ground
+            this.BB = new BoundingBox(this.x, this.y, this.width + 4*PARAMS.SCALE, this.height - 16*PARAMS.SCALE);
+        } else if (this.state === 8) {
+            this.BB = new BoundingBox(this.x, this.y, this.width + 4*PARAMS.SCALE, this.height - 16*PARAMS.SCALE);
         }
     };
 
