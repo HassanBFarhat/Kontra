@@ -6,7 +6,7 @@ class TransitionScreen {
 
     update() {
         this.elapsed += this.game.clockTick;
-        if (this.elapsed > 2) this.game.camera.loadLevel(this.level, this.x, this.y, false, this.gameOver);
+        if (this.elapsed > 2 || PARAMS.DEBUG) this.game.camera.loadLevel(this.level, this.x, this.y, false, this.gameOver);
     };
 
     draw(ctx) {
