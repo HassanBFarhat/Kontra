@@ -71,7 +71,7 @@ class Bullet {
                 ent.die();
                 this.removeFromWorld = true;
                 this.source.bulletCount--;
-            } else if (ent instanceof Lance && this.BB.collide(ent.BB)) {
+            } else if (!this.lanceTeam && ent instanceof Lance && this.BB.collide(ent.BB)) {
                 // TODO: set lance ent.die() to commence his death scene
                 if (ent.lives <= 0) ent.removeFromWorld = true;
                 else {
