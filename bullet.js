@@ -67,7 +67,7 @@ class Bullet {
         // Collisions
         this.updateBoundingBox();
         this.game.entities.forEach((ent) => {
-            if (this.lanceTeam && ent instanceof Soldier && this.BB.collide(ent.BB)) {
+            if (this.lanceTeam && (ent instanceof Soldier || ent instanceof Sniper) && this.BB.collide(ent.BB)) {
                 ent.die();
                 this.removeFromWorld = true;
                 this.source.bulletCount--;

@@ -38,7 +38,7 @@ class Sniper {
         // right - down (5) [0][5]
         this.animations[0].push(new Animator(this.spritesheet, 39, 158, 25, 33, 1, 0.1, 30, false, true));
         // dying animation [1][0]
-        this.animations[1].push(new Animator(this.spritesheet, 35, 277, 33, 33, 3, 0.1, 30, false, true));
+        this.animations[1].push(new Animator(this.spritesheet, 35, 277, 35, 33, 3, 0.1, 33.5, false, false));
     
         this.elapsedTime = 0;
     }
@@ -63,10 +63,21 @@ class Sniper {
         this.elapsedTime += this.game.clockTick;
         let target = null;
 
+        // TODO: DEBUG TO MAKE HIM MOVE LIKE SOLDIER WHEN DEAD
+        // if (this.state === 1) { // Dead
+        //     let deltaX = this.x - this.initialX;
+        //     this.y -= Math.sqrt(Math.abs(deltaX)) / 20;
+        //     if (this.y < 320) this.x += this.DEAD_SPEED * this.elapsedTime;
+        //     this.BB = new BoundingBox(-PARAMS.CANVAS_WIDTH, -PARAMS.CANVAS_HEIGHT, 0, 0); // Invalidate bounding box
+        //     // this.x += this.DEAD_SPEED * this.elapsedTime;
+        //     setTimeout(this.removeFromCanvas.bind(this), 550);
+        //     return;
+        // }
+
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
             
-            if (ent instanceof Lance && this.elapsedTime > this.fireRate) {
+            if (ent instanceof Lance && this.elapsedTime > this.fireRate && this.state != 1) {
                 this.elapsedTime = 0;
                 target = ent;
                 this.game.addEntity(new Bullet(this.game, this.x, this.y + 50, this, ent, false, false, true));
@@ -79,7 +90,6 @@ class Sniper {
             let angle = Math.atan2(y, x) * (180 / Math.PI);
             let adjustedAngle = (angle < 0) ? 360 + angle : angle;
 
-            console.log(angle)
 
             if (adjustedAngle >= 157.5 && adjustedAngle <= 202.5) this.facing = 0; //left GOOD
             else if (adjustedAngle >= 202.5 && adjustedAngle <= 247.5) this.facing = 1; //left-down GOOD
@@ -94,7 +104,16 @@ class Sniper {
     
     draw(ctx) {
         if (this.state === 0) {
-            this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 33, PARAMS.SCALE);
+            if (this.facing == 2 || this.facing == 5) {
+                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 37, PARAMS.SCALE);
+            } else if (this.facing == 4) {
+                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 5, PARAMS.SCALE);
+            } else if (this.facing == 1) {
+                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + 24, this.y + 5, PARAMS.SCALE);
+            }
+            else {
+                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 33, PARAMS.SCALE);
+            }
         } else {
             this.animations[1][0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 33, PARAMS.SCALE);
         }
