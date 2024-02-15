@@ -104,16 +104,10 @@ class Sniper {
     
     draw(ctx) {
         if (this.state === 0) {
-            if (this.facing == 2 || this.facing == 5) {
-                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 37, PARAMS.SCALE);
-            } else if (this.facing == 4) {
-                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 5, PARAMS.SCALE);
-            } else if (this.facing == 1) {
-                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + 24, this.y + 5, PARAMS.SCALE);
-            }
-            else {
-                this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 33, PARAMS.SCALE);
-            }
+            if (this.facing == 2 || this.facing == 5) this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 37, PARAMS.SCALE); 
+            else if (this.facing == 4) this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 5, PARAMS.SCALE); 
+            else if (this.facing == 1) this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x + 24, this.y + 5, PARAMS.SCALE);
+            else this.animations[0][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 33, PARAMS.SCALE);
         } else {
             this.animations[1][0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y + 33, PARAMS.SCALE);
         }
