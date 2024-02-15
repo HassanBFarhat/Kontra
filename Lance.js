@@ -24,6 +24,7 @@ class Lance {
         this.isOnGround = false;
         this.isJumping = false;
         this.isDropping = false; // Dropping from platform
+        this.lives = 2;
 
         this.velocity = {x: 0, y: 0};
         this.WALK_SPEED = 300;
@@ -285,6 +286,10 @@ class Lance {
                     this.x = entity.BB.right;
                     this.velocity.x = 0;
                     this.updateBoundingBox(); // Needed?
+                } else if (entity instanceof Soldier) {
+                    // set lances state to dying state
+                    if (this.lives <= 0) this.removeFromWorld = true;
+                    else this.lives--;
                 }
             }
         });
