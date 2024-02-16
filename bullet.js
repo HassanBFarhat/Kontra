@@ -79,7 +79,6 @@ class Bullet {
                     ent.hit = true;
                     ent.lives--;
                     ent.die();
-                    setTimeout(ent.respawn.bind(ent), 3200);
                 }
             }
         });

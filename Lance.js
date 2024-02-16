@@ -27,6 +27,7 @@ class Lance {
         this.lives = 2;
         this.collided = false;
         this.hit = false;
+        this.deathAnimatedOnce = 0;
 
         this.velocity = {x: 0, y: 0};
         this.WALK_SPEED = 300;
@@ -99,9 +100,9 @@ class Lance {
         this.animations[9][0] = new Animator(this.spritesheet2, 395, 164, 18, 45, 1, 0.1, 30, false, true);
 
         // dead left
-        this.animations[10][1] = new Animator(this.spritesheet2, 38, 288, 34, 24, 3, 0.1, 25, true, true); //reverse bc sprites reversed on sheet
+        this.animations[10][1] = new Animator(this.spritesheet2, 38, 288, 34, 24, 3, 0.2, 25, true, true); //reverse bc sprites reversed on sheet
         // dead right
-        this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 24, 3, 0.1, 25, false, true);
+        this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 24, 3, 0.2, 25, false, true);
 
         // walk left and shooting
         this.animations[11][1] = new Animator(this.spritesheet2, 38, 925, 28, 35, 3, 0.1, 36, true, true);
@@ -156,6 +157,7 @@ class Lance {
 
     die() {
         this.dead = true;
+        setTimeout(this.respawn.bind(this), 1700);
     };
 
     respawn() {
@@ -167,6 +169,7 @@ class Lance {
         this.isDropping = false;
         this.collided = false;
         this.hit = false;
+        this.deathAnimatedOnce = 0;
         this.y = 100;
     }
 
@@ -306,7 +309,6 @@ class Lance {
                     else {
                         this.lives--;
                         this.die();
-                        setTimeout(this.respawn.bind(this), 3200);
                     }
                 }
             }
@@ -345,7 +347,13 @@ class Lance {
         } else if (this.state === 9) { //looking directly up
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 11 *PARAMS.SCALE, PARAMS.SCALE);
         } else if (this.state === 10) {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 40 *PARAMS.SCALE, PARAMS.SCALE);
+            if (this.deathAnimatedOnce == 75) {
+                if (this.facing == 0) ctx.drawImage(this.spritesheet2, 156, 392, 33, 24, this.x - this.game.camera.x, this.y - 40 * PARAMS.SCALE, 33 * PARAMS.SCALE, 24 * PARAMS.SCALE);
+                else ctx.drawImage(this.spritesheet2, 39, 289, 33, 24, this.x - this.game.camera.x, this.y - 40 * PARAMS.SCALE, 33 * PARAMS.SCALE, 24 * PARAMS.SCALE);
+            } else {
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 40 *PARAMS.SCALE, PARAMS.SCALE);
+                this.deathAnimatedOnce++;
+            }
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
