@@ -25,6 +25,7 @@ class Lance {
         this.isJumping = false;
         this.isDropping = false; // Dropping from platform
         this.lives = 2;
+        this.collided = false;
 
         this.velocity = {x: 0, y: 0};
         this.WALK_SPEED = 300;
@@ -97,9 +98,9 @@ class Lance {
         this.animations[9][0] = new Animator(this.spritesheet2, 395, 164, 18, 45, 1, 0.1, 30, false, true);
 
         // dead left
-        this.animations[10][1] = new Animator(this.spritesheet2, 38, 288, 34, 25, 3, 0.1, 30, true, true); //reverse bc sprites reversed on sheet
+        this.animations[10][1] = new Animator(this.spritesheet2, 38, 288, 34, 24, 3, 0.5, 25, true, false); //reverse bc sprites reversed on sheet
         // dead right
-        this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 25, 3, 0.1, 30, false, true);
+        this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 24, 3, 0.5, 25, false, false);
 
         // walk left and shooting
         this.animations[11][1] = new Animator(this.spritesheet2, 38, 925, 28, 35, 3, 0.1, 36, true, true);
@@ -155,6 +156,16 @@ class Lance {
     die() {
         this.dead = true;
     };
+
+    respawn() {
+        this.state = 2; // Start in jumping state
+        this.dead = false;
+        this.isSpawning = true;
+        this.isOnGround = false;
+        this.isJumping = false;
+        this.isDropping = false;
+        this.y = 100;
+    }
 
     update() {
         const TICK = this.game.clockTick;
@@ -286,10 +297,16 @@ class Lance {
                     this.x = entity.BB.right;
                     this.velocity.x = 0;
                     this.updateBoundingBox(); // Needed?
-                } else if (entity instanceof Soldier) {
+                } else if (entity instanceof Soldier && this.BB.collide(entity.BB) && !this.collided) {
                     // set lances state to dying state
-                    if (this.lives <= 0) this.removeFromWorld = true;
-                    else this.lives--;
+                    this.collided = true;
+                    if (this.lives == 0) this.removeFromWorld = true;
+                    else {
+                        console.log(this.lives);
+                        this.lives--;
+                        console.log(this.lives);
+                        setTimeout(this.respawn.bind(this), 3200);
+                    }
                 }
             }
         });
@@ -326,6 +343,8 @@ class Lance {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.state === 9) { //looking directly up
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 11 *PARAMS.SCALE, PARAMS.SCALE);
+        } else if (this.state === 10) {
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 40 *PARAMS.SCALE, PARAMS.SCALE);
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }

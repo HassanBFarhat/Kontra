@@ -9,7 +9,7 @@ class Sniper {
         this.dead = false;
         this.width = 30 * PARAMS.SCALE;
         this.height = 34 * PARAMS.SCALE;
-        this.fireRate = 1;
+        this.fireRate = 0.5;
 
         this.initialX = this.x;
 
@@ -77,7 +77,7 @@ class Sniper {
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
             
-            if (ent instanceof Lance && this.elapsedTime > this.fireRate && this.state != 1) {
+            if (ent instanceof Lance && this.elapsedTime > this.fireRate && this.state != 1 && !ent.hit) {
                 this.elapsedTime = 0;
                 target = ent;
                 this.game.addEntity(new Bullet(this.game, this.x, this.y + 50, this, ent, false, false, true));
