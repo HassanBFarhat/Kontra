@@ -26,6 +26,7 @@ class Lance {
         this.isDropping = false; // Dropping from platform
         this.lives = 2;
         this.collided = false;
+        this.hit = false;
 
         this.velocity = {x: 0, y: 0};
         this.WALK_SPEED = 300;
@@ -164,12 +165,18 @@ class Lance {
         this.isOnGround = false;
         this.isJumping = false;
         this.isDropping = false;
+        this.collided = false;
+        this.hit = false;
         this.y = 100;
     }
 
     update() {
         const TICK = this.game.clockTick;
         this.elapsedTime += TICK;
+
+        // if (this.dead && this.lives > 0) {
+        //     this.respawn();
+        // }
 
         // A button
         if (this.game.A && this.isOnGround) {
@@ -302,9 +309,8 @@ class Lance {
                     this.collided = true;
                     if (this.lives == 0) this.removeFromWorld = true;
                     else {
-                        console.log(this.lives);
                         this.lives--;
-                        console.log(this.lives);
+                        this.die();
                         setTimeout(this.respawn.bind(this), 3200);
                     }
                 }
