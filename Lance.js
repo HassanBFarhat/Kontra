@@ -234,30 +234,30 @@ class Lance {
                     case 0:
                     case 11: // walking
                         if (this.facing === 0) { // right
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0, true, false));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0, true));
                         } else { // left
-                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180, true, false));
+                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180, true));
                         }
                         break;
                     case 6: // up right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 2*PARAMS.SCALE, this, false, 45, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 2*PARAMS.SCALE, this, false, 45, true));
                         break;
                     case 7: // down right
-                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 3*PARAMS.SCALE, this, false, 315, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.right, this.y + 3*PARAMS.SCALE, this, false, 315, true));
                         break;
                     case 4: // up left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 4*PARAMS.SCALE, this, false, 135, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 4*PARAMS.SCALE, this, false, 135, true));
                         break;
                     case 5: // down left
-                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 3* PARAMS.SCALE, this, false, 225, true, false));
+                        this.game.addEntity(new Bullet(this.game, this.BB.left, this.y + 3* PARAMS.SCALE, this, false, 225, true));
                         break;
                     case 8: // crouching
                         if (!this.isOnGround) { // Mid jump
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 20, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 270, true, false));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width/2 - 20, this.y + 27*PARAMS.SCALE - PARAMS.SCALE, this, false, 270, true));
                         } else if (this.facing === 0) { // right
-                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y - 6*PARAMS.SCALE, this, false, 0, true, false));
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y - 6*PARAMS.SCALE, this, false, 0, true));
                         } else {
-                            this.game.addEntity(new Bullet(this.game, this.x, this.y - 6*PARAMS.SCALE, this, false, 180, true, false));
+                            this.game.addEntity(new Bullet(this.game, this.x, this.y - 6*PARAMS.SCALE, this, false, 180, true));
                         }
                         break;
                     case 9: // up

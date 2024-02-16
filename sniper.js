@@ -19,7 +19,7 @@ class Sniper {
         this.lastBB = this.BB;
 
         this.state = 0; // 0 = alive, 1 = dead
-        // 0 = 0 deg or 360 deg, 1 = 45 deg, 2 = 135 deg, 3 = 180 deg, 4 = 225 deg, 5 = 315 deg
+        // 0 = 180 deg, 1 = 135 deg, 2 = 225 deg, 3 = 0 deg, 4 = 45 deg, 5 = 315 deg
         this.facing = 0;  
 
         this.animations = [];
@@ -73,7 +73,27 @@ class Sniper {
             if (ent instanceof Lance && this.elapsedTime > this.fireRate && this.state != 1 && !ent.hit) {
                 this.elapsedTime = 0;
                 target = ent;
-                this.game.addEntity(new Bullet(this.game, this.x, this.y + 50, this, ent, false, false, true));
+                switch(this.facing) {
+                    case 0: // 180 degrees - left 
+                        this.game.addEntity(new Bullet(this.game, this.x - 4, this.y + 58, this, ent, 180, false));
+                        break;
+                    case 1: // 135 degrees - left-up 
+                        this.game.addEntity(new Bullet(this.game, this.x + 20, this.y + 10, this, ent, 135, false));
+                        break;
+                    case 2: // 225 degrees - left-down 
+                        this.game.addEntity(new Bullet(this.game, this.x, this.y + 122, this, ent, 225, false));
+                        break;
+                    case 3: // 0 degrees - right 
+                        this.game.addEntity(new Bullet(this.game, this.x + 100, this.y + 58, this, ent, 0, false));
+                        break;
+                    case 4: // 45 degrees - right-up
+                        this.game.addEntity(new Bullet(this.game, this.x + 76, this.y + 10, this, ent, 45, false));
+                        break;
+                    case 5: // 315 degrees - right-down 
+                        this.game.addEntity(new Bullet(this.game, this.x + 96, this.y + 121, this, ent, 315, false));
+                        break;
+                }
+                
             }
         } 
 

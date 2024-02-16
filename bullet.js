@@ -1,6 +1,6 @@
 class Bullet {
-    constructor(game, x, y, source, target, angle, lanceTeam, heatSeeking) {
-        Object.assign(this, {game, x, y, source, target, angle, lanceTeam, heatSeeking});
+    constructor(game, x, y, source, target, angle, lanceTeam) {
+        Object.assign(this, {game, x, y, source, target, angle, lanceTeam});
         this.radius = 12;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bullet_1.png");
@@ -8,11 +8,7 @@ class Bullet {
         let dist = distance(this, this.target); // NOTE: This is NaN if you have no target!
         this.maxSpeed = 500; // px per sec
 
-        if (this.heatSeeking) {
-            this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed}; // TODO: Does this work? - Implemented for when the Sniper is implemented
-        } else {
-            this.velocity = this.angleToVelocity(angle, this.maxSpeed);
-        }
+        this.velocity = this.angleToVelocity(angle, this.maxSpeed);
 
         // this.cache = []; // TODO: Useful for anything? - Not sure at the moment, will refactor/remove uncessary items when this class is 100%
         this.updateBoundingBox();
@@ -48,11 +44,6 @@ class Bullet {
     };
 
     update() {
-        if (this.heatSeeking) {
-            let dist = distance(this, this.target);
-            this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
-        }
-
         this.x += this.velocity.x * this.game.clockTick;
         this.y += this.velocity.y * this.game.clockTick;
 
@@ -76,9 +67,9 @@ class Bullet {
                 if (ent.lives == 0) ent.removeFromWorld = true;
                 else {
                     this.removeFromWorld = true;
-                    ent.hit = true;
-                    ent.lives--;
-                    ent.die();
+                    // ent.hit = true;
+                    // ent.lives--;
+                    // ent.die();
                 }
             }
         });
