@@ -99,9 +99,9 @@ class Lance {
         this.animations[9][0] = new Animator(this.spritesheet2, 395, 164, 18, 45, 1, 0.1, 30, false, true);
 
         // dead left
-        this.animations[10][1] = new Animator(this.spritesheet2, 38, 288, 34, 24, 3, 0.5, 25, true, false); //reverse bc sprites reversed on sheet
+        this.animations[10][1] = new Animator(this.spritesheet2, 38, 288, 34, 24, 3, 0.1, 25, true, true); //reverse bc sprites reversed on sheet
         // dead right
-        this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 24, 3, 0.5, 25, false, false);
+        this.animations[10][0] = new Animator(this.spritesheet2, 38, 392, 34, 24, 3, 0.1, 25, false, true);
 
         // walk left and shooting
         this.animations[11][1] = new Animator(this.spritesheet2, 38, 925, 28, 35, 3, 0.1, 36, true, true);
@@ -173,10 +173,6 @@ class Lance {
     update() {
         const TICK = this.game.clockTick;
         this.elapsedTime += TICK;
-
-        // if (this.dead && this.lives > 0) {
-        //     this.respawn();
-        // }
 
         // A button
         if (this.game.A && this.isOnGround) {
@@ -305,7 +301,6 @@ class Lance {
                     this.velocity.x = 0;
                     this.updateBoundingBox(); // Needed?
                 } else if (entity instanceof Soldier && this.BB.collide(entity.BB) && !this.collided) {
-                    // set lances state to dying state
                     this.collided = true;
                     if (this.lives == 0) this.removeFromWorld = true;
                     else {
