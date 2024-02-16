@@ -63,8 +63,12 @@ class Sniper {
         this.elapsedTime += this.game.clockTick;
         let target = null;
 
-        if (this.state === 1) { // Dead
+        if (this.dead) return;
+        else if (this.state === 1) { // Dead
             this.BB = new BoundingBox(-PARAMS.CANVAS_WIDTH, -PARAMS.CANVAS_HEIGHT, 0, 0); // Invalidate bounding box
+            setTimeout(this.removeFromCanvas.bind(this), 550); // remove from canvas after animation
+            this.dead = true;
+            return;
         }
 
         for (let i = 0; i < this.game.entities.length; i++) {
