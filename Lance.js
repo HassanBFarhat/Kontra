@@ -121,7 +121,7 @@ class Lance {
                 break;
             case 7: // down-right
             case 5: // down-left
-                this.BB = new BoundingBox(this.x + 15, this.y +5, this.width - this.width/2 + 4, this.height +5);
+                this.BB = new BoundingBox(this.x + 15, this.y, this.width - this.width/2 + 4, this.height);
                 break;
             case 9: // UP
                 this.BB = new BoundingBox(this.x + 10, this.y, this.width - this.width/2 - 5, this.height);
@@ -285,7 +285,7 @@ class Lance {
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
-                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top + 10) { // Collided with ground
+                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
                     this.isOnGround = true;
                     this.isJumping = false;
                     this.isSpawning = false;
@@ -316,7 +316,7 @@ class Lance {
 
         this.updateLastBoundingBox();
 
-        if (this.isOnGround && (this.x > this.ledgeR || this.x < this.ledgeL)) { // walked off ledge
+        if (this.isOnGround && (this.x >= this.ledgeR + 10 || this.x <= this.ledgeL - 10)) { // walked off ledge
             this.isOnGround = false;
         }
         
@@ -355,7 +355,7 @@ class Lance {
                 this.deathAnimatedOnce++;
             }
         } else {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 2 * PARAMS.SCALE, PARAMS.SCALE);
         }
 
         if (PARAMS.DEBUG) {
