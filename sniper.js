@@ -63,16 +63,9 @@ class Sniper {
         this.elapsedTime += this.game.clockTick;
         let target = null;
 
-        // TODO: DEBUG TO MAKE HIM MOVE LIKE SOLDIER WHEN DEAD
-        // if (this.state === 1) { // Dead
-        //     let deltaX = this.x - this.initialX;
-        //     this.y -= Math.sqrt(Math.abs(deltaX)) / 20;
-        //     if (this.y < 320) this.x += this.DEAD_SPEED * this.elapsedTime;
-        //     this.BB = new BoundingBox(-PARAMS.CANVAS_WIDTH, -PARAMS.CANVAS_HEIGHT, 0, 0); // Invalidate bounding box
-        //     // this.x += this.DEAD_SPEED * this.elapsedTime;
-        //     setTimeout(this.removeFromCanvas.bind(this), 550);
-        //     return;
-        // }
+        if (this.state === 1) { // Dead
+            this.BB = new BoundingBox(-PARAMS.CANVAS_WIDTH, -PARAMS.CANVAS_HEIGHT, 0, 0); // Invalidate bounding box
+        }
 
         for (let i = 0; i < this.game.entities.length; i++) {
             let ent = this.game.entities[i];
