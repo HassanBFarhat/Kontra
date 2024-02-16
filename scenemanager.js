@@ -101,7 +101,7 @@ class SceneManager {
  
     draw(ctx) {
 
-        if (this.title) { // Title Screen
+        if (this.title && !PARAMS.DEBUG) { // Title Screen
             ctx.drawImage(ASSET_MANAGER.getAsset("backgrounds/kontra-title.png"), 0 *PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
             ctx.fillStyle = this.game.mouse && this.game.mouse.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH ? "Red" : "White";
             ctx.fillText("Start", 5.8 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH);
