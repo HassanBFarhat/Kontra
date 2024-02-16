@@ -268,7 +268,7 @@ class Lance {
                         }
                         break;
                     default:
-                        console.log("Lance firing hit default state, this shouldn't happen")
+                        console.log("Lance firing hit default state with state == "+ this.state +", this shouldn't happen")
                 }
     
                 this.bulletCount++; // We give bullet `this` as source, so it can reduce bullet count when it removes itself                

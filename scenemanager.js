@@ -12,8 +12,6 @@ class SceneManager {
 
 
         this.lance = new Lance(this.game, this.x, 154);
-        this.lance.velocity = { x: 0, y: 0 };
-        this.lance.state = 0; //loads in idle state
 
         this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true); // I dont think the rest of the arguments are necessary, JS will ignore them
 
@@ -54,6 +52,8 @@ class SceneManager {
             }
 
             if (level.sniper) {level.sniper.forEach(sniper => this.game.addEntity(new Sniper(this.game, sniper.x, sniper.y)));}
+
+            if (level.trigger) {level.trigger.forEach(trigger => this.game.addEntity(new Trigger(this.game, trigger.x, trigger.y, trigger.fn)));}
         }
 
         if (level.music && !this.title) {
@@ -68,7 +68,6 @@ class SceneManager {
 
         ASSET_MANAGER.muteAudio(mute);
         ASSET_MANAGER.adjustVolume(volume);
-
     };
 
     update() {

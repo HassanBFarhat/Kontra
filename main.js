@@ -31,5 +31,6 @@ ASSET_MANAGER.downloadAll(function () {
 	PARAMS.CANVAS_HEIGHT = canvas.height;
 	gameEngine.init(ctx);
 	gameEngine.addEntity(new SceneManager(gameEngine));
+
 	gameEngine.start();
 });
