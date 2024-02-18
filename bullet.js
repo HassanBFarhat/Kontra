@@ -67,9 +67,9 @@ class Bullet {
                 if (ent.lives == 0) ent.removeFromWorld = true;
                 else {
                     this.removeFromWorld = true;
-                    // ent.hit = true;
-                    // ent.lives--;
-                    // ent.die();
+                    ent.hit = true;
+                    ent.lives--;
+                    ent.die();
                 }
             }
         });
