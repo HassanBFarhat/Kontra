@@ -111,15 +111,19 @@ class SceneManager {
             ctx.drawImage(ASSET_MANAGER.getAsset("backgrounds/kontra-title.png"), 0 *PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
             ctx.fillStyle = this.game.mouse && this.game.mouse.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH ? "Red" : "White";
             ctx.fillText("Start", 5.8 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH);
+            document.getElementById("info").style.display = "block";
         }
 
-        // draw hud on top left, below fps counter
-        ctx.fillStyle = "White";
-        ctx.fillText(`Lives: ${this.game.lance.lives}`, 5, 35);
 
-        // elapsed time since level start
-        ctx.fillText(`Time: ${this.elapsedTime.toFixed(2)}`, 5, 45);
+        if (!this.title) {
+            // draw hud on top left, below fps counter
+            ctx.fillStyle = "White";
+            ctx.fillText(`Lives: ${this.game.lance.lives}`, 5, 35);
 
+            // elapsed time since level start
+            ctx.fillText(`Time: ${this.elapsedTime.toFixed(2)}`, 5, 45);
+            document.getElementById("info").style.display = "none";
+        }
 
         if (PARAMS.DEBUG) {
             ctx.translate(0, -10); // hack to move elements up by 10 pixels instead of adding -10 to all y coordinates below
