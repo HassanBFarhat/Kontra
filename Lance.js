@@ -157,12 +157,17 @@ class Lance {
 
     die() {
         this.dead = true;
+        this.y += 250;
+        this.state = 10;
+        this.lives--;
+        console.log("Lance died, lives left: " + this.lives);
         setTimeout(this.respawn.bind(this), 1700);
     };
 
     respawn() {
+        console.log("Lance respawned");
         this.state = 2; // Start in jumping state
-        this.dead = false;
+        this.y = 0;
         this.isSpawning = true;
         this.isOnGround = false;
         this.isJumping = false;
@@ -170,13 +175,14 @@ class Lance {
         this.collided = false;
         this.hit = false;
         this.deathAnimatedOnce = 0;
-        this.y = 100;
+        this.dead = false;
     }
 
     update() {
         const TICK = this.game.clockTick;
         this.elapsedTime += TICK;
 
+        if (this.dead) return;
         // A button
         if (this.game.A && this.isOnGround) {
             if (!this.game.right && !this.game.left && this.game.down) { // Drop from platform
@@ -304,12 +310,8 @@ class Lance {
                     this.velocity.x = 0;
                     this.updateBoundingBox(); // Needed?
                 } else if (entity instanceof Soldier && this.BB.collide(entity.BB) && !this.collided) {
-                    this.collided = true;
-                    if (this.lives == 0) this.removeFromWorld = true;
-                    else {
-                        this.lives--;
-                        this.die();
-                    }
+                    console.log("Lance collided with soldier: " + this.dead);
+                    this.die();
                 }
             }
         });
