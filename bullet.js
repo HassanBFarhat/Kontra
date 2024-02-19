@@ -57,24 +57,22 @@ class Bullet {
 
         // Collisions
         this.updateBoundingBox();
-        this.game.entities.forEach((ent) => {
-            if (this.lanceTeam && (ent instanceof Soldier || ent instanceof Sniper) && this.BB.collide(ent.BB)) {
-                ent.die();
-                this.removeFromWorld = true;
-                this.source.bulletCount--;
-            } else if (!this.lanceTeam && ent instanceof Lance && this.BB.collide(ent.BB) && !ent.hit) {
-                // TODO: set lance ent.die() to commence his death scene
-                if (ent.lives == 0) ent.removeFromWorld = true;
-                else {
-                    this.removeFromWorld = true;
-                    ent.hit = true;
-                    ent.lives--;
-                    ent.die();
+        this.game.entities.forEach(ent => {
+            if (ent.BB && this.BB.collide(ent.BB)) {
+                if ((this.lanceTeam && ent !== this.source && !ent.dead && (ent instanceof Soldier || ent instanceof Sniper)) 
+                || (!this.lanceTeam && ent !== this.source && !ent.dead && ent instanceof Lance)) {
+                    this.kill(ent);
                 }
             }
         });
         this.updateLastBoundingBox();
     };
+
+    kill(ent) {
+        this.removeFromWorld = true;
+        this.source.bulletCount--;
+        ent.die();
+    }
 
     draw(ctx) {
         this.animations[0].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 8, PARAMS.SCALE);
