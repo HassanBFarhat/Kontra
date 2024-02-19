@@ -38,7 +38,7 @@ class SceneManager {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y, title));
         }
         else {
-            if (level.background) { level.background.forEach(background => this.game.addEntity(new Background(this.game, background.x, background.y)));}
+            if (level.background) { level.background.forEach(background => this.game.addEntity(new Background(this.game, background.x, background.y, background.img)));}
 
             if (level.ground) {level.ground.forEach(ground => this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.w, ground.h)));}
 
@@ -78,7 +78,7 @@ class SceneManager {
             if (this.game.click && this.game.click.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
                 this.lance = new Lance(this.game, this.x, 154);
-                this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); // I dont think the rest of the arguments are necessary, JS will ignore them
+                this.loadLevel(this.level, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); // I dont think the rest of the arguments are necessary, JS will ignore them
             }
         }
 
@@ -101,7 +101,7 @@ class SceneManager {
 
         if (!PARAMS.DEBUG && this.game.lance.lives < 0) {
             ASSET_MANAGER.pauseBackgroundMusic();
-            this.game.addEntity(new TransitionScreen(this.game, levelOne, 0, 0, true));
+            this.game.addEntity(new TransitionScreen(this.game, this.level, 0, 0, true));
         }
     };
  

@@ -1,8 +1,8 @@
 class Background { 
-    constructor(game, x, y) {
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, img) {
+        Object.assign(this, { game, x, y, img});
 
-        this.backgroundImage = ASSET_MANAGER.getAsset("backgrounds/random kontra level.png");
+        this.backgroundImage = ASSET_MANAGER.getAsset(img);
         this.x = x;
         this.y = y;
     };
