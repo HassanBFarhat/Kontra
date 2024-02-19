@@ -28,6 +28,7 @@ class SceneManager {
     loadLevel(level, x, y, transition, title) {
         this.title = title;
         this.level = level;
+        this.gameOver = false;
         this.clearEntities();
         this.game.entities = [];
         this.x = 0;
@@ -77,7 +78,7 @@ class SceneManager {
             if (this.game.click && this.game.click.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
                 this.lance = new Lance(this.game, this.x, 154);
-             this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); // I dont think the rest of the arguments are necessary, JS will ignore them
+                this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); // I dont think the rest of the arguments are necessary, JS will ignore them
             }
         }
 
@@ -98,6 +99,10 @@ class SceneManager {
         // Check if debug checkbox is checked
         PARAMS.DEBUG = this.debugCheckbox.checked;
 
+        if (!PARAMS.DEBUG && this.game.lance.lives < 0) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            this.game.addEntity(new TransitionScreen(this.game, levelOne, 0, 0, true));
+        }
     };
  
     draw(ctx) {
