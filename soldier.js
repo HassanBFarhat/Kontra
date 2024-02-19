@@ -95,14 +95,6 @@ class Soldier {
             if (ent instanceof Lance && canSee(this, ent)) {
                 this.target = ent;
             }
-            if (ent instanceof Lance && collide(this, ent)) {
-                if (this.state === 0) { // running to lance
-                    this.target = ent;
-                    ent.die();
-                    this.x -= this.WALK_SPEED * this.elapsedTime - 2;
-                }
-                this.target = this.path[this.targetID];
-            }
             // Physical Collisons
             if (ent.BB && this.BB.collide(ent.BB)) {
                 if (ent instanceof Ground && this.lastBB.bottom <= ent.BB.top) { // Ground
