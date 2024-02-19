@@ -15,7 +15,7 @@ class SceneManager {
 
         this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true); // I dont think the rest of the arguments are necessary, JS will ignore them
 
-
+        this.elapsedTime = 0;
         this.debugCheckbox = document.getElementById("debug");
     };
 
@@ -31,6 +31,7 @@ class SceneManager {
         this.clearEntities();
         this.game.entities = [];
         this.x = 0;
+        this.elapsedTime = 0;
 
         if (transition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y, title));
@@ -71,6 +72,7 @@ class SceneManager {
     };
 
     update() {
+        this.elapsedTime += this.game.clockTick;
         if (this.title && this.game.click){
             if (this.game.click && this.game.click.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
@@ -89,7 +91,7 @@ class SceneManager {
 
         this.updateAudio();
 
-        let midpoint = PARAMS.CANVAS_WIDTH / 2 - this.lance.width / 2;
+        let midpoint = PARAMS.CANVAS_WIDTH / 2 - this.game.lance.width / 2;
 
         if (this.x < this.game.lance.x - midpoint) this.x = this.game.lance.x - midpoint;
 
@@ -105,6 +107,14 @@ class SceneManager {
             ctx.fillStyle = this.game.mouse && this.game.mouse.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH ? "Red" : "White";
             ctx.fillText("Start", 5.8 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH);
         }
+
+        // draw hud on top left, below fps counter
+        ctx.fillStyle = "White";
+        ctx.fillText(`Lives: ${this.game.lance.lives}`, 5, 35);
+
+        // elapsed time since level start
+        ctx.fillText(`Time: ${this.elapsedTime.toFixed(2)}`, 5, 45);
+
 
         if (PARAMS.DEBUG) {
             ctx.translate(0, -10); // hack to move elements up by 10 pixels instead of adding -10 to all y coordinates below
