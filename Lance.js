@@ -37,8 +37,8 @@ class Lance {
         this.height = 34 * PARAMS.SCALE;
 
         // The edges of the last touched ground entity
-        let ledgeR = 0; 
-        let ledgeL = 0;
+        this.ledgeR = 0; 
+        this.ledgeL = 0;
 
         this.updateBoundingBox();
         this.lastBB = this.BB;
@@ -156,6 +156,7 @@ class Lance {
     };
 
     die() {
+        if (this.isSpawning) return; // Don't die if spawning
         this.dead = true;
         this.y += 250;
         this.state = 10;
@@ -310,7 +311,6 @@ class Lance {
                     this.velocity.x = 0;
                     this.updateBoundingBox(); // Needed?
                 } else if (entity instanceof Soldier && this.BB.collide(entity.BB) && !this.collided) {
-                    console.log("Lance collided with soldier: " + this.dead);
                     this.die();
                 }
             }

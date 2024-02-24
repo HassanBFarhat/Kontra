@@ -13,7 +13,7 @@ class SceneManager {
 
         this.lance = new Lance(this.game, this.x, 154);
 
-        this.loadLevel(levelTwo, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true); // I dont think the rest of the arguments are necessary, JS will ignore them
+        this.loadLevel(levelTwo, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH);
 
         this.elapsedTime = 0;
         this.debugCheckbox = document.getElementById("debug");
