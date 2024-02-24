@@ -98,6 +98,19 @@ class SceneManager {
 
         // Check if debug checkbox is checked
         PARAMS.DEBUG = this.debugCheckbox.checked;
+        if (PARAMS.DEBUG) {
+            // get selection value from html
+            let levelSelect = document.getElementById("level");
+            let levelValue = levelSelect.options[levelSelect.selectedIndex].value;
+            switch (levelValue) {
+                case "1": if (this.level != levelOne) this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
+                case "2": if (this.level != levelTwo) this.loadLevel(levelTwo, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
+                case "3": if (this.level != levelThree) this.loadLevel(levelThree, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
+                case "4": if (this.level != levelFour) this.loadLevel(levelFour, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
+                default: break;
+            }
+        }
+
 
         if (!PARAMS.DEBUG && this.game.lance.lives < 0) {
             ASSET_MANAGER.pauseBackgroundMusic();
