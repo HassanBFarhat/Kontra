@@ -39,6 +39,7 @@ class Lance {
         // The edges of the last touched ground entity
         this.ledgeR = 0; 
         this.ledgeL = 0;
+        this.lastGroundTop = 0;
 
         this.updateBoundingBox();
         this.lastBB = this.BB;
@@ -215,7 +216,7 @@ class Lance {
         else if (this.game.right && this.game.B) this.state = 11;
         else if (this.game.left) this.state = 1;
         else if (this.game.right) this.state = 1;
-        else if (this.game.down) this.state = 8;
+        else if (this.game.down && !this.isDropping) this.state = 8;
         else if (this.game.up) this.state = 9
         else if (this.dead) this.state = 10;
         else this.state = 0; // idle state;
@@ -292,24 +293,17 @@ class Lance {
         this.updateBoundingBox();
         this.game.entities.forEach(entity => { 
             if (entity.BB && this.BB.collide(entity.BB)) { // Enitity has BB and collides
-                if ((!this.isDropping && !this.isJumping) && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
-                    this.isOnGround = true;
-                    this.isJumping = false;
-                    this.isSpawning = false;
-                    this.updateBoundingBox(); // Update bounding box now that we've landed and changed BB state
-                    this.y = entity.BB.y - this.BB.height;
-                    this.updateBoundingBox(); // Update bounding box now that we've moved lance up to the top of hte ground
-                    // Magic numbers to align more with feet
-                    this.ledgeR = entity.BB.right - 10;
-                    this.ledgeL = entity.BB.left - this.width + 50;
-                } else if (this.isOnGround && entity instanceof Ground && this.lastBB.right >= entity.BB.left && this.lastBB.left < entity.BB.left) { // Left of wall
-                    this.x = entity.BB.left - this.BB.width;
-                    this.velocity.x = 0;
-                    this.updateBoundingBox(); // Needed?
-                } else if (this.isOnGround && entity instanceof Ground && this.lastBB.left >= entity.BB.right - 20) { // Right of wall
-                    this.x = entity.BB.right;
-                    this.velocity.x = 0;
-                    this.updateBoundingBox(); // Needed?
+                if (this.isDropping && entity instanceof Ground && this.lastBB.bottom <= this.lastGroundTop) { // Ignore previous ground collision when dropping
+                } else if (!this.isJumping && entity instanceof Ground && this.lastBB.bottom <= entity.BB.top) { // Collided with ground
+                    this.land(entity);
+                // } else if (this.isOnGround && entity instanceof Ground && this.lastBB.right >= entity.BB.left && this.lastBB.left < entity.BB.left) { // Left of wall
+                //     this.x = entity.BB.left - this.BB.width;
+                //     this.velocity.x = 0;
+                //     this.updateBoundingBox(); // Needed?
+                // } else if (this.isOnGround && entity instanceof Ground && this.lastBB.left >= entity.BB.right - 20) { // Right of wall
+                //     this.x = entity.BB.right;
+                //     this.velocity.x = 0;
+                //     this.updateBoundingBox(); // Needed?
                 } else if (entity instanceof Soldier && this.BB.collide(entity.BB) && !this.collided) {
                     this.die();
                 }
@@ -333,6 +327,20 @@ class Lance {
             this.updateBoundingBox();
         }
     };
+
+    land(entity) {
+        this.isOnGround = true;
+        this.isJumping = false;
+        this.isSpawning = false;
+        this.isDropping = false;
+        this.updateBoundingBox(); // Update bounding box now that we've landed and changed BB state
+        this.y = entity.BB.y - this.BB.height;
+        this.updateBoundingBox(); // Update bounding box now that we've moved lance up to the top of the ground
+        // Magic numbers to align more with feet
+        this.ledgeR = entity.BB.right - 10;
+        this.ledgeL = entity.BB.left - this.width + 50;
+        this.lastGroundTop = entity.BB.top;
+    }
 
 
     draw(ctx) {
@@ -371,6 +379,8 @@ class Lance {
             ctx.fillText("facing: " + this.facing, this.x - this.game.camera.x, this.y - 40);
             ctx.fillText("isOnGround: " + this.isOnGround, this.x - this.game.camera.x, this.y - 50);
             ctx.fillText("isJumping: " + this.isJumping, this.x - this.game.camera.x, this.y - 60);
+            ctx.fillText("isDropping: " + this.isDropping, this.x - this.game.camera.x, this.y - 70);
+            ctx.fillText("lastGroundTop: " + this.lastGroundTop, this.x - this.game.camera.x, this.y - 80);
         }
     };
 }
