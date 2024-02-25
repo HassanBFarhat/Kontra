@@ -14,7 +14,17 @@ class GameEngine {
         this.A = false;
         this.B = false;
 
+        this.player2Controls = {
+            left: false,
+            right: false,
+            up: false,
+            down: false,
+            A: false,
+            B: false
+        };
+
         this.gamepad = null;
+
     };
 
     init(ctx) { // called after page has loaded
@@ -58,28 +68,42 @@ class GameEngine {
             that.keyboardActive = true;
             switch (e.code) {
                 case "ArrowLeft":
-                case "KeyA":
                     that.left = true;
                     break;
                 case "ArrowRight":
-                case "KeyD":
                     that.right = true;
                     break;
                 case "ArrowUp":
-                case "KeyW":
                     that.up = true;
                     break;
                 case "ArrowDown":
-                case "KeyS":
                     that.down = true;
                     break;
                 case "KeyZ":
-                case "Comma":
                     that.B = true;
                     break;
                 case "KeyX":
-                case "Period":
                     that.A = true;
+                    break;
+
+                // Player 2 controls
+                case "KeyA":
+                    that.player2Controls.left = true;
+                    break;
+                case "KeyD":
+                    that.player2Controls.right = true;
+                    break;
+                case "KeyW":
+                    that.player2Controls.up = true;
+                    break;
+                case "KeyS":
+                    that.player2Controls.down = true;
+                    break;
+                case "Comma":
+                    that.player2Controls.B = true;
+                    break;
+                case "Period":
+                    that.player2Controls.A = true;
                     break;
             }
         }
@@ -87,28 +111,42 @@ class GameEngine {
             that.keyboardActive = false;
             switch (e.code) {
                 case "ArrowLeft":
-                case "KeyA":
                     that.left = false;
                     break;
                 case "ArrowRight":
-                case "KeyD":
                     that.right = false;
                     break;
                 case "ArrowUp":
-                case "KeyW":
                     that.up = false;
                     break;
                 case "ArrowDown":
-                case "KeyS":
                     that.down = false;
                     break;
                 case "KeyZ":
-                case "Comma":
                     that.B = false;
                     break;
                 case "KeyX":
-                case "Period":
                     that.A = false;
+                    break;
+
+                // Player 2 controls
+                case "KeyA":
+                    that.player2Controls.left = false;
+                    break;
+                case "KeyD":
+                    that.player2Controls.right = false;
+                    break;
+                case "KeyW":
+                    that.player2Controls.up = false;
+                    break;
+                case "KeyS":
+                    that.player2Controls.down = false;
+                    break;
+                case "Comma":
+                    that.player2Controls.B = false;
+                    break;
+                case "Period":
+                    that.player2Controls.A = false;
                     break;
             }
         }
