@@ -101,7 +101,7 @@ class SceneManager {
         this.checkLevel();
 
 
-        if (!PARAMS.DEBUG && this.game.lance.lives < 0) {
+        if (!PARAMS.DEBUG && this.game.lance.lives == 0) {
             ASSET_MANAGER.pauseBackgroundMusic();
             this.game.addEntity(new TransitionScreen(this.game, this.level, 0, 0, true));
         }
