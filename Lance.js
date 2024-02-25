@@ -167,9 +167,8 @@ class Lance {
     };
 
     respawn() {
-        console.log("Lance respawned");
         this.state = 2; // Start in jumping state
-        this.y = 0;
+        this.y = 0; // TODO: Perhaps spawn at default lance x/y?
         this.isSpawning = true;
         this.isOnGround = false;
         this.isJumping = false;
@@ -230,11 +229,6 @@ class Lance {
             this.facing = 1; // left
         } 
 
-        // Crouch on ground
-        if (this.isOnGround && this.game.down) {
-            this.y += 64;
-        }
-
         // Bullet logic
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
@@ -284,9 +278,19 @@ class Lance {
             }
         }
 
+        if (this.isOnGround && (this.x >= this.ledgeR + 10 || this.x <= this.ledgeL - 10)) { // walked off ledge
+            this.isDropping = true;
+            this.isOnGround = false;
+        }
+
         // Fall unless on ground or jumping
         if (!this.isJumping || this.isJumping && this.isDropping) {
             this.y += this.FALL_SPEED * TICK;
+        }
+
+        // Crouch on ground
+        if (!this.isDropping && this.isOnGround && this.game.down) {
+            this.y += 64;
         }
 
         // Check Collisions
@@ -312,19 +316,9 @@ class Lance {
 
         this.updateLastBoundingBox();
 
-        if (this.isOnGround && (this.x >= this.ledgeR + 10 || this.x <= this.ledgeL - 10)) { // walked off ledge
-            this.isOnGround = false;
-        }
-        
-        if (this.y >= PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8) { // hit bottom of screen
-            this.isOnGround = true;
-            this.isJumping = false;
-            this.isDropping = false;
-            this.y = PARAMS.CANVAS_HEIGHT - 32*PARAMS.SCALE -8
-            if (this.state === 8) { // crouching
-                this.y += 64;
-            }
-            this.updateBoundingBox();
+        if (this.y >= PARAMS.CANVAS_HEIGHT) { // hit bottom of screen
+            this.isSpawning = false;
+            this.die();
         }
     };
 
@@ -344,7 +338,7 @@ class Lance {
 
 
     draw(ctx) {
-        if (this.isJumping || this.isSpawning || (!this.isOnGround && !this.isDropping)) { // Jumping takes precidence
+        if (!this.dead && (this.isJumping || this.isSpawning || (!this.isOnGround && !this.isDropping))) { // Jumping takes precidence
             this.animations[2][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.state == 0) { // if idle
             if (this.facing == 1) { // if facing left
