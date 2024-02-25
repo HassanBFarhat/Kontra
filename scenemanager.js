@@ -10,10 +10,7 @@ class SceneManager {
         this.title = true;
         this.level = null;
 
-
-        this.lance = new Lance(this.game, this.x, 154);
-
-        this.loadLevel(levelTwo, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH);
+        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
 
         this.elapsedTime = 0;
         this.debugCheckbox = document.getElementById("debug");
@@ -98,8 +95,17 @@ class SceneManager {
 
         // Check if debug checkbox is checked
         PARAMS.DEBUG = this.debugCheckbox.checked;
+        this.checkLevel();
+
+
+        if (!PARAMS.DEBUG && this.game.lance.lives < 0) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            this.game.addEntity(new TransitionScreen(this.game, this.level, 0, 0, true));
+        }
+    };
+
+    checkLevel() {
         if (PARAMS.DEBUG) {
-            // get selection value from html
             let levelSelect = document.getElementById("level");
             let levelValue = levelSelect.options[levelSelect.selectedIndex].value;
             switch (levelValue) {
@@ -110,13 +116,7 @@ class SceneManager {
                 default: break;
             }
         }
-
-
-        if (!PARAMS.DEBUG && this.game.lance.lives < 0) {
-            ASSET_MANAGER.pauseBackgroundMusic();
-            this.game.addEntity(new TransitionScreen(this.game, this.level, 0, 0, true));
-        }
-    };
+    }
  
     draw(ctx) {
 
