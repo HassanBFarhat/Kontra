@@ -41,6 +41,8 @@ class SceneManager {
 
             if (level.lance) {level.lance.forEach(lance => this.game.addEntity(new Lance(this.game, lance.x, lance.y)));}
 
+            if (level.lance2) {level.lance2.forEach(lance2 => this.game.addEntity(new Lance2(this.game, lance2.x, lance2.y)));}
+
             if (level.soldier) {
                 level.soldier.forEach(soldier => { // TODO: Remove hardcoded path?
                     this.game.addEntity(new Soldier(this.game, soldier.x, soldier.y, [{x: 1600, y: 349}, {
@@ -75,6 +77,7 @@ class SceneManager {
             if (this.game.click && this.game.click.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
                 this.lance = new Lance(this.game, this.x, 154);
+                this.lance2 = new Lance2(this.game, this.x, 154);
                 this.loadLevel(this.level, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); // I dont think the rest of the arguments are necessary, JS will ignore them
             }
         }
