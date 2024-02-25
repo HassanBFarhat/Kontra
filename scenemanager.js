@@ -115,7 +115,6 @@ class SceneManager {
                 case "1": if (this.level != levelOne) this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
                 case "2": if (this.level != levelTwo) this.loadLevel(levelTwo, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
                 case "3": if (this.level != levelThree) this.loadLevel(levelThree, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
-                case "4": if (this.level != levelFour) this.loadLevel(levelFour, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); break;
                 default: break;
             }
         }

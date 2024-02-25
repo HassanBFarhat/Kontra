@@ -4,7 +4,6 @@ const ASSET_MANAGER = new AssetManager();
 //spritesheets and backgrounds
 ASSET_MANAGER.queueDownload("backgrounds/random kontra level.png");
 ASSET_MANAGER.queueDownload("backgrounds/stage1.png");
-ASSET_MANAGER.queueDownload("backgrounds/stage2.png");
 ASSET_MANAGER.queueDownload("backgrounds/stage3.png");
 
 ASSET_MANAGER.queueDownload("backgrounds/kontra-title.png");
