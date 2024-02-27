@@ -21,29 +21,44 @@
         font-size: 20px;
         border: 2px #222 solid;
         box-shadow: 0px 0px 5px 5px rgb(255, 255, 255);
+        position: relative;
+        z-index: 1;
       }
-      div {
+      #title, #controls {
         text-align: center;
       }
 
-      #controls, #goal  { /* display controls over canvas without affecting contents */
-        position: absolute;
-        top: 25px;
-        left: -250px;
-        right: 0;
-        bottom: 0;
+      #playfield {
+        position: relative;
+        width: 768px;
         margin: auto;
+        z-index: 1;
+        padding-bottom: 20px;
+      }
+      #info  {
+        position: absolute;
+        top: 300px;
+        left: 0px;
+        z-index: 2;
         width: 200px;
-        height: 150px;
+        height: 400px;
         background-color: rgba(0, 0, 0, 0.5);
         color: white;
-        padding: 10px;
-        border-radius: 10px;
         box-shadow: 0px 0px 5px 5px rgb(255, 255, 255);
       }
 
-      #goal {
-        left: 250px;
+      h2 {
+        margin: 0;
+        padding: 0;
+        padding-bottom: 0px;
+        border-bottom: silver solid 2px;
+        width: 100%;
+        text-align: center;
+      }
+
+      p #info {
+        margin: 0;
+        padding: 0;
       }
     </style>
     <script type="text/javascript" src="./assetmanager.js"></script>
@@ -66,10 +81,10 @@
     <script type="text/javascript" src="./main.js"></script>
   </head>
   <body>
-    <div>
-      <br />Kontra: With a K<br />
-      <br />
+    <div id="title">
+      <br />Kontra: With a K<br /><br />
     </div>
+    <div id="playfield">
     <canvas
       id="gameWorld"
       width="768"
@@ -78,23 +93,24 @@
       tabindex="0"
       autofocus
     ></canvas>
+    <!-- disable up/down window scrolling -->
+    <script>document.getElementById("gameWorld").onkeydown = function (e) {if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {e.view.event.preventDefault();}}</script>
     <div id="info">
-      <div id="controls">
-        <p>Controls<br/>
-        Arrow keys to move<br/><b>x</b> to jump<br/><b>z</b> to shoot</p>
-      </div>
-      <div id="goal">
-        <p>Goal<br/>Get to the end without dying!</p>
-      </div>
+      <h2>Controls</h2>
+      <p>Move: <b>Arrow Keys</b><br/>Jump: <b>x</b><br/>Drop: <b>Down</b> + <b>x</b><br>Fire: <b>z</b></p>
+      <h2>Goal</h2><p>Get to the end without dying!</p>
     </div>
-    <br />
-    <input type="checkbox" id="debug"> Debug 
-    <select id="level">
-      <option value="1">Level 1</option>
-      <option value="2">Level 2</option>
-      <option value="3">Level 3</option>
-    </select>
-    <input type="checkbox" id="mute"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05"> Volume
+  </div>  
+    </div>
 
+    <div id="controls">
+      <input type="checkbox" id="debug"> Debug 
+      <select id="level">
+        <option value="1">Level 1</option>
+        <option value="2">Level 2</option>
+        <option value="3">Level 3</option>
+      </select>
+      <input type="checkbox" id="mute"> Mute <input type="range" id="volume" min="0" max="1" value="0.1" step="0.05"> Volume
+    </div>
   </body>
 </html>
