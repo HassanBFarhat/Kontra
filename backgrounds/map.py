@@ -2,7 +2,7 @@ from PIL import Image
 import json
 
 # Open the image file
-img = Image.open('stage1-pix.png')
+img = Image.open('stage3-pix.png')
 
 # Convert the image to RGBA (Red, Green, Blue, Alpha)
 img = img.convert('RGBA')
