@@ -9,7 +9,11 @@ class Sniper {
         this.dead = false;
         this.width = 30 * PARAMS.SCALE;
         this.height = 34 * PARAMS.SCALE;
-        this.fireRate = 0.5;
+        
+        // Bullets
+        this.fireRate = 0.7;
+        this.bulletCount = 0;
+        this.maxBullets = 2;
 
         this.initialX = this.x;
 
@@ -71,9 +75,9 @@ class Sniper {
             return;
         }
 
-        for (let i = 0; i < this.game.entities.length; i++) {
-            let ent = this.game.entities[i];
-            
+        // Don't try firing if past max bullets
+        if (this.bulletCount >= this.maxBullets) return;
+        this.game.entities.forEach(ent => {
             if (ent instanceof Lance && this.elapsedTime > this.fireRate && this.state != 1 && !ent.hit) {
                 this.elapsedTime = 0;
                 target = ent;
@@ -96,10 +100,10 @@ class Sniper {
                     case 5: // 315 degrees - right-down 
                         this.game.addEntity(new Bullet(this.game, this.x + 96, this.y + 121, this, ent, 315, false));
                         break;
-                }
-                
+                } 
+                this.bulletCount++;    
             }
-        } 
+        });
 
         if (target != null) {
             let x = target.x - this.x;

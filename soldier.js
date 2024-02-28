@@ -13,8 +13,8 @@ class Soldier {
         this.isOnGround = false;
         this.ledge = 0;
 
-        this.WALK_SPEED = 0.25;
-        this.FALL_SPEED = 200; // TODO: Convert to elapsed time
+        this.WALK_SPEED = 190;
+        this.FALL_SPEED = 200;
         this.DEAD_SPEED = 0.22;
 
         this.initialX = this.x;
@@ -62,6 +62,8 @@ class Soldier {
     }
 
     update() {
+        // Don't update if far beyond camera
+        if (this.x > this.game.camera.x + PARAMS.CANVAS_WIDTH + this.FALL_SPEED*PARAMS.SCALE) return;
         this.elapsedTime += this.game.clockTick;
 
         if (this.state === 1) { // Dead
@@ -83,7 +85,11 @@ class Soldier {
         }
 
         // movement
-        this.x -= this.WALK_SPEED * this.elapsedTime;
+        if (this.velocity.x < this.WALK_SPEED) {
+            this.velocity.x += this.WALK_SPEED * this.elapsedTime;
+        }
+
+        this.x -= this.velocity.x * this.game.clockTick;
         if (!this.isOnGround) { // fall if not on ground
             this.y += this.FALL_SPEED  * this.game.clockTick; // TODO: Convert to elapsed time?
         }
@@ -103,7 +109,6 @@ class Soldier {
                     this.ledge = ent.BB.left;
                     this.updateBoundingBox();
                 }
-                // TODO: Collide with lance and cause damage to lance
             }
         });
         this.updateLastBoundingBox();
@@ -113,14 +118,6 @@ class Soldier {
 
         // Die if falls off screen
         if (this.y > PARAMS.CANVAS_HEIGHT) this.die();
-
-        // TODO: Do we need this for anything?
-        // if (this.state !== 0) {
-        //     dist = distance(this, this.target); 
-        //     this.velocity = {x: (this.target.x - this.x) / dist * this.maxSpeed, y: (this.target.y - this.y) / dist * this.maxSpeed};
-        //     this.x += this.velocity.x * this.game.clockTick;
-        //     this.y += this.velocity.y * this.game.clockTick;
-        // }
     }
     
     draw(ctx) {
