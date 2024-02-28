@@ -11,7 +11,7 @@ const levelOne = {
     soldier: [{x: 1800, y:0}, {x: 600, y:0}, {x: 900, y:0}, {x: 1500, y:0}, {x: 1600, y:0}, {x:1700, y:0},
               {x: 4370, y:0}, {x: 4470, y:0}, {x: 4570, y:0}, {x: 7000, y:0}, {x: 7200, y:0}, {x: 8800, y:0},
               {x: 8900, y:0}, {x: 9000, y:0}, {x: 9100, y:0}, {x: 11500, y:0}, {x: 11900, y:0}],
-    sniper: [{x: 1200, y:0}, {x: 4100, y:0}, {x: 6000, y:0}, {x: 6400, y:0}, {x: 10600, y:0}],
+    sniper: [{x: 1200, y:350}, {x: 4100, y:350}, {x: 6000, y:350}, {x: 6400, y:350}, {x: 10600, y:350}],
     trigger: [{x: 13421, y: 0, fn: (that) => {ASSET_MANAGER.pauseBackgroundMusic();that.game.addEntity(new TransitionScreen(that.game, levelTwo, 0, 0, false));}}]
 };
 
