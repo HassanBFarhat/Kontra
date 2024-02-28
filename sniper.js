@@ -11,9 +11,9 @@ class Sniper {
         this.height = 34 * PARAMS.SCALE;
         
         // Bullets
-        this.fireRate = 0.7;
+        this.fireRate = 1;
         this.bulletCount = 0;
-        this.maxBullets = 2;
+        this.maxBullets = 1;
 
         this.initialX = this.x;
 
