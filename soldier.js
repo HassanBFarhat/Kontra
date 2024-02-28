@@ -55,6 +55,7 @@ class Soldier {
     die() {
         this.state = 1;
         this.dead = true;
+        ASSET_MANAGER.playAsset("sounds/enemy_hit.wav");
     };
 
     removeFromCanvas() {

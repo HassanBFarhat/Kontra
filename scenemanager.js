@@ -60,6 +60,7 @@ class SceneManager {
         if (level.music && !this.title) {
             ASSET_MANAGER.pauseBackgroundMusic();
             ASSET_MANAGER.playAsset(level.music);
+            ASSET_MANAGER.autoRepeat(level.music);
         }
     }
 

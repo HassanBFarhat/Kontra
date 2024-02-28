@@ -72,6 +72,7 @@ class Sniper {
             this.BB = new BoundingBox(-PARAMS.CANVAS_WIDTH, -PARAMS.CANVAS_HEIGHT, 0, 0); // Invalidate bounding box
             setTimeout(this.removeFromCanvas.bind(this), 550); // remove from canvas after animation
             this.dead = true;
+            ASSET_MANAGER.playAsset("sounds/enemy_hit.wav");
             return;
         }
 
@@ -100,7 +101,7 @@ class Sniper {
                     case 5: // 315 degrees - right-down 
                         this.game.addEntity(new Bullet(this.game, this.x + 96, this.y + 121, this, ent, 315, false));
                         break;
-                } 
+                }
                 this.bulletCount++;    
             }
         });
