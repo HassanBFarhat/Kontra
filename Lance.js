@@ -233,12 +233,18 @@ class Lance {
         if (this.game.B) {
             if (this.elapsedTime - this.lastBulletTime > this.fireRate && this.bulletCount < this.maxBullets) {
                 switch (this.state) {
-                    case 0:
-                    case 11: // walking
+                    case 0: // Standing
                         if (this.facing === 0) { // right
                             this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - PARAMS.SCALE, this, false, 0, true));
                         } else { // left
                             this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - PARAMS.SCALE, this, false, 180, true));
+                        }
+                        break;
+                    case 11: //running fire
+                        if (this.facing === 0) { // right
+                            this.game.addEntity(new Bullet(this.game, this.x + this.width, this.y + this.width/2 - 3*PARAMS.SCALE, this, false, 0, true));
+                        } else { // left
+                            this.game.addEntity(new Bullet(this.game, this.x - 6 * PARAMS.SCALE, this.y + this.width/2 - 3*PARAMS.SCALE, this, false, 180, true));
                         }
                         break;
                     case 6: // up right
