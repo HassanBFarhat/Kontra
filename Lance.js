@@ -157,7 +157,7 @@ class Lance {
     };
 
     die() {
-        if (this.isSpawning) return; // Don't die if spawning
+        if (this.isSpawning || this.dead) return; // Don't die if spawning
         this.dead = true;
         this.y += 250;
         this.state = 10;
