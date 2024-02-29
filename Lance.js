@@ -24,7 +24,7 @@ class Lance {
         this.isOnGround = false;
         this.isJumping = false;
         this.isDropping = false; // Dropping from platform
-        this.lives = 2;
+        this.lives = 4;
         this.collided = false;
         this.hit = false;
         this.deathAnimatedOnce = 0;
