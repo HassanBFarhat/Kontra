@@ -315,7 +315,7 @@ class Lance {
                 //     this.x = entity.BB.right;
                 //     this.velocity.x = 0;
                 //     this.updateBoundingBox(); // Needed?
-                } else if (entity instanceof Soldier && this.BB.collide(entity.BB) && !this.collided) {
+                } else if (entity instanceof Soldier && this.BB.collide(entity.BB) && entity.BB.bottom > this.BB.top + 20 && !this.collided) {
                     this.die();
                 }
             }
