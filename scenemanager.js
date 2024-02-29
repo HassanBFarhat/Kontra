@@ -125,8 +125,10 @@ class SceneManager {
 
         if (this.title && !PARAMS.DEBUG) { // Title Screen
             ctx.drawImage(ASSET_MANAGER.getAsset("backgrounds/kontra-title.png"), 0 *PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
+            ctx.font = "bold 48px serif";
             ctx.fillStyle = this.game.mouse && this.game.mouse.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH ? "Red" : "White";
             ctx.fillText("Start", 5.8 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH);
+            ctx.font = "13px serif";
             document.getElementById("info").style.display = "block";
         }
 
@@ -137,7 +139,7 @@ class SceneManager {
             ctx.fillText(`Lives: ${this.game.lance.lives}`, 5, 35);
 
             // elapsed time since level start
-            ctx.fillText(`Time: ${this.elapsedTime.toFixed(2)}`, 5, 45);
+            ctx.fillText(`Time: ${this.elapsedTime.toFixed(2)}`, 5, 55);
             document.getElementById("info").style.display = "none";
         }
 

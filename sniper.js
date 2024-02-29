@@ -72,7 +72,7 @@ class Sniper {
             this.BB = new BoundingBox(-PARAMS.CANVAS_WIDTH, -PARAMS.CANVAS_HEIGHT, 0, 0); // Invalidate bounding box
             setTimeout(this.removeFromCanvas.bind(this), 550); // remove from canvas after animation
             this.dead = true;
-            ASSET_MANAGER.playAsset("sounds/enemy_hit.wav");
+            ASSET_MANAGER.playAsset("sounds/enemy_hit.mp3");
             return;
         }
 

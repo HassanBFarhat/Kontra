@@ -280,7 +280,7 @@ class Lance {
                 }
     
                 this.bulletCount++; // We give bullet `this` as source, so it can reduce bullet count when it removes itself
-                ASSET_MANAGER.playAsset("sounds/gun_sound.wav");
+                ASSET_MANAGER.playAsset("sounds/gun_sound.mp3");
                 this.lastBulletTime = this.elapsedTime;
             }
         }
@@ -364,7 +364,7 @@ class Lance {
             } else {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 40 *PARAMS.SCALE, PARAMS.SCALE);
                 this.deathAnimatedOnce++;
-                ASSET_MANAGER.playAsset("sounds/lance_death.wav");
+                ASSET_MANAGER.playAsset("sounds/lance_death.mp3");
             }
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 2 * PARAMS.SCALE, PARAMS.SCALE);

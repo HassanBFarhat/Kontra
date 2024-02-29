@@ -22,11 +22,11 @@ ASSET_MANAGER.queueDownload("music/3.mp3");
 ASSET_MANAGER.queueDownload("music/4.mp3");
 
 //sound effects
-ASSET_MANAGER.queueDownload("sounds/enemy_hit.wav");
-ASSET_MANAGER.queueDownload("sounds/gun_sound.wav");
-ASSET_MANAGER.queueDownload("sounds/jump_sound.wav");
-ASSET_MANAGER.queueDownload("sounds/lance_death.wav");
-ASSET_MANAGER.queueDownload("sounds/new_level.wav");
+ASSET_MANAGER.queueDownload("sounds/enemy_hit.mp3");
+ASSET_MANAGER.queueDownload("sounds/gun_sound.mp3");
+ASSET_MANAGER.queueDownload("sounds/jump_sound.mp3");
+ASSET_MANAGER.queueDownload("sounds/lance_death.mp3");
+ASSET_MANAGER.queueDownload("sounds/new_level.mp3");
 
 ASSET_MANAGER.downloadAll(function () {
 	const gameEngine = new GameEngine();
