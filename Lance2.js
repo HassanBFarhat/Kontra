@@ -295,7 +295,7 @@ class Lance2 {
         }
 
         // Crouch on ground
-        if (!this.isDropping && this.isOnGround && this.game.down) {
+        if (!this.isDropping && this.isOnGround && this.game.player2Controls.down) {
             this.y += 64;
         }
 
