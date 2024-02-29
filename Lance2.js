@@ -157,7 +157,8 @@ class Lance2 {
     };
 
     die() {
-        if (this.isSpawning) return; // Don't die if spawning
+        if (this.isSpawning || this.dead) return; // Don't die if spawning
+        ASSET_MANAGER.playAsset("sounds/lance_death.mp3");
         this.dead = true;
         this.y += 250;
         this.state = 10;
@@ -363,7 +364,6 @@ class Lance2 {
             } else {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 40 *PARAMS.SCALE, PARAMS.SCALE);
                 this.deathAnimatedOnce++;
-                ASSET_MANAGER.playAsset("sounds/lance_death.mp3");
             }
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 2 * PARAMS.SCALE, PARAMS.SCALE);
