@@ -20,6 +20,7 @@ ASSET_MANAGER.queueDownload("music/1.mp3");
 ASSET_MANAGER.queueDownload("music/2.mp3");
 ASSET_MANAGER.queueDownload("music/3.mp3");
 ASSET_MANAGER.queueDownload("music/4.mp3");
+ASSET_MANAGER.queueDownload("music/menu.mp3");
 
 //sound effects
 ASSET_MANAGER.queueDownload("sounds/enemy_hit.mp3");

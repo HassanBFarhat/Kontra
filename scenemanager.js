@@ -129,6 +129,8 @@ class SceneManager {
             ctx.fillStyle = this.game.mouse && this.game.mouse.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH ? "Red" : "White";
             ctx.fillText("Start", 5.8 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH);
             ctx.font = "13px serif";
+            ASSET_MANAGER.playAsset("music/menu.mp3");
+            ASSET_MANAGER.autoRepeat("music/menu.mp3");
             document.getElementById("info").style.display = "block";
         }
 
