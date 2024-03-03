@@ -8,12 +8,14 @@ class SceneManager {
         this.gameOver = false;
 
         this.title = true;
-        this.level = null;
-
-        this.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
+        this.level = levelOne;
+        this.lance = new Lance(this.game, this.x, 154);
+        this.lance2 = new Lance2(this.game, this.x, 154);
 
         this.elapsedTime = 0;
         this.debugCheckbox = document.getElementById("debug");
+        ASSET_MANAGER.playAsset("music/menu.mp3");
+        ASSET_MANAGER.autoRepeat("music/menu.mp3");
     };
 
     clearEntities() {
@@ -77,8 +79,6 @@ class SceneManager {
         if (this.title && this.game.click){
             if (this.game.click && this.game.click.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
-                this.lance = new Lance(this.game, this.x, 154);
-                this.lance2 = new Lance2(this.game, this.x, 154);
                 this.loadLevel(this.level, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true); // I dont think the rest of the arguments are necessary, JS will ignore them
             }
         }
@@ -122,16 +122,20 @@ class SceneManager {
     }
  
     draw(ctx) {
-
         if (this.title && !PARAMS.DEBUG) { // Title Screen
             ctx.drawImage(ASSET_MANAGER.getAsset("backgrounds/kontra-title.png"), 0 *PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
             ctx.font = "bold 48px serif";
-            ctx.fillStyle = this.game.mouse && this.game.mouse.y > 5.8 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8 * PARAMS.BLOCKWIDTH ? "Red" : "White";
+            ctx.fillStyle = this.game.mouse && this.game.mouse.y > 7.5 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 8.5 * PARAMS.BLOCKWIDTH ? "Red" : "White";
             ctx.fillText("Start", 5.8 * PARAMS.BLOCKWIDTH, 8 * PARAMS.BLOCKWIDTH);
             ctx.font = "13px serif";
-            ASSET_MANAGER.playAsset("music/menu.mp3");
-            ASSET_MANAGER.autoRepeat("music/menu.mp3");
             document.getElementById("info").style.display = "block";
+            if (ASSET_MANAGER.getAsset("music/menu.mp3").paused) {
+                ASSET_MANAGER.playAsset("music/menu.mp3")
+                ASSET_MANAGER.autoRepeat("music/menu.mp3")
+            };
+            this.clearEntities();
+            if (navigator.getAutoplayPolicy("mediaelement") === "disallowed")
+                ctx.fillText("Interact with page for background music!~", 3.8 * PARAMS.BLOCKWIDTH, 12 * PARAMS.BLOCKWIDTH)
         }
 
 
