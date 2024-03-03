@@ -134,7 +134,7 @@ class SceneManager {
                 ASSET_MANAGER.autoRepeat("music/menu.mp3")
             };
             this.clearEntities();
-            if (navigator.getAutoplayPolicy("mediaelement") === "disallowed")
+            // if (navigator.getAutoplayPolicy("mediaelement") === "disallowed")
                 ctx.fillText("Interact with page for background music!~", 3.8 * PARAMS.BLOCKWIDTH, 12 * PARAMS.BLOCKWIDTH)
         }
 
